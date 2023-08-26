@@ -1,12 +1,74 @@
 ---
 # Playbook to create webserver
-- hosts: webserver
-  become: yes
+- hosts: localhost
+  connection: local
+  become: true
   tasks:
-    - name: Creating folder for files.
-      file:
-        path: /var/www/htmll/
-        state: directory
+    - name: Run the equivalent of "apt-get update"
+      apt:
+        update_cache: yes
+
+    - name: Provision Git, Java JRE, and .NetCore
+      apt:
+        name:
+              - git
+              - openjdk-19-jdk
+              - apt-transport-https
+    
+    - name: Run the equivalent of "apt-get update"
+      apt:
+        update_cache: yes
+
+    - name: Provision the rest of packages properly for .NetCore apps
+      apt:
+        name:
+              - dotnet-sdk-7.0
+              - dotnet-runtime-7.0
+              - aspnetcore-runtime-7.0
+
+    - name: Install VSCode
+      shell: |
+        apt install software-properties-common apt-transport-https wget --yes
+        wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | apt-key add -
+        add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" --yes
+        apt install code --yes
+
+    - name: Install Maven using Ansible
+      apt:
+        name: "{{ packages }}"
+        state: present
+      vars:
+        packages:
+           - maven
+
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: latest
+    # - name: Creating folder for files.
+    #   file:
+    #     path: /home/ubuntu/htmll/
+    #     state: directory
+    #     owner: root
+    #     group: root
+    #     mode: '0755'
+
+    - name: Install PostgreSQL
+      shell: |
+        sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+        wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+        apt-get update -y
+        apt-get -y install postgresql
+    #Check its version with "psql --version"
+
+    - name: Copy index.html template to Nginx configuration
+      copy:
+        src: ../../../Frontend/index.nginx-debian.html
+        dest: /var/www/html/
         owner: root
         group: root
-        mode: '0755'
+        mode: '0644'
+
+    - name: Starting Nginx service
+      shell: |
+        service nginx restart

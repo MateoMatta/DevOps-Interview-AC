@@ -11,7 +11,7 @@ git clone https://github.com/MateoMatta/DevOps-Interview-AC /srv/app
 sudo apt install ansible -y
 
 #Run Ansible playbook
-cd /srv/app/Infrastructure/conf_mgmt_ansible
+cd /srv/app/Infrastructure/conf_mgmt_ansible/playbooks
 sudo ansible-playbook 01-image-build-and-push.yml
 #Inside the playbook, a COPY module copies file "index.nginx-debian.html" to "/var/www/html/" directory
 
