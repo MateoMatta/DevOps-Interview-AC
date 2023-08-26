@@ -1,0 +1,12 @@
+---
+# Playbook to create webserver
+- hosts: webserver
+  become: yes
+  tasks:
+    - name: Creating folder for files.
+      file:
+        path: /var/www/htmll/
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
