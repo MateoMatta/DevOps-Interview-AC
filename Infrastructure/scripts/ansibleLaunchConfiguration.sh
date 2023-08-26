@@ -12,7 +12,9 @@ sudo apt install ansible -y
 
 #Run Ansible playbook
 cd /srv/app/Infrastructure/conf_mgmt_ansible/playbooks
-sudo ansible-playbook 01-image-build-and-push.yml
+sudo su #Just for ec2 machine, not container
+ansible-playbook 01-image-build-and-push.yml
+exit
 #Inside the playbook, a COPY module copies file "index.nginx-debian.html" to "/var/www/html/" directory
 
 # #Run nginx-test-app server
