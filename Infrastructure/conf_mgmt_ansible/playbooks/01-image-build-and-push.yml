@@ -13,28 +13,23 @@
         name:
               - git
               - openjdk-19-jdk
-              - apt-transport-https
     
-    - name: Run the equivalent of "apt-get update"
-      apt:
-        update_cache: yes
-
-    - name: Provision other packages for .NetCore apps
-      shell: |
-        apt-get update -y && apt-get install -yqq daemonize dbus-user-session fontconfig
-        daemonize /usr/bin/unshare --fork --pid --mount-proc /lib/systemd/systemd --system-unit=basic.target exec nsenter -t $(pidof systemd) -a su - $LOGNAME
-        apt install wget -y
-        wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-        dpkg -i packages-microsoft-prod.deb
-        apt update -y
-        apt install apt-transport-https -y
-        apt update -y
-        apt install dotnet-sdk-6.0
-    - name: Provision the rest of packages properly for .NetCore apps
-      apt:
-        name:
-              - dotnet-runtime-6.0
-              - aspnetcore-runtime-6.0
+    # - name: Provision other packages for .NetCore apps
+    #   shell: |
+    #     # apt-get update -y && apt-get install -yqq daemonize dbus-user-session fontconfig
+    #     # daemonize /usr/bin/unshare --fork --pid --mount-proc /lib/systemd/systemd --system-unit=basic.target exec nsenter -t $(pidof systemd) -a su - $LOGNAME
+    #     # apt install wget -y
+    #     # wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+    #     # dpkg -i packages-microsoft-prod.deb
+    #     apt update -y
+    #     apt install apt-transport-https -y
+    #     apt update -y
+    #     apt install dotnet-sdk-6.0
+    # - name: Provision the rest of packages properly for .NetCore apps
+    #   apt:
+    #     name:
+    #           - dotnet-runtime-6.0
+    #           - aspnetcore-runtime-6.0
 
     - name: Install VSCode
       shell: |
