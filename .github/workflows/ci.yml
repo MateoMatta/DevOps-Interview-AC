@@ -1,0 +1,18 @@
+name: CI
+on: [pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Clone test-app repo
+        run: |
+          mkdir -p /srv/app
+          sudo chmod 755 /srv/app
+      - uses: actions/checkout@v3
+        with:
+          path: '/srv/app'
+      - name: Run a multi-line script
+        run: |
+          echo Hello,
+          echo there.
