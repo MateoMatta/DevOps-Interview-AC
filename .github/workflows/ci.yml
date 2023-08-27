@@ -7,11 +7,11 @@ jobs:
     steps:
       - name: Clone test-app repo
         run: |
-          mkdir -p $HOME/app
-          chmod 755 $HOME/app
+          mkdir -p /home/runner/app
+          chmod 755 /home/runner/app
       - uses: actions/checkout@v3
         with:
-          path: '$HOME/app'
+          path: '/home/runner/app'
       - name: Run a multi-line script
         run: |
           echo $HOME
