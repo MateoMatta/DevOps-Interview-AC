@@ -11,6 +11,6 @@ jobs:
       - name: Run a multi-line script
         run: |
           echo $HOME
-          ls /home/runner/app
+          ls /home/runner/work
           install ansible -y
           ansible --version
