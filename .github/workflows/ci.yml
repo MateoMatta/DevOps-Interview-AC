@@ -19,7 +19,9 @@ jobs:
           sudo ls /var/www/html/
           echo ''
           tree /home/runner/work/DevOps-Interview-AC
-          sudo ls /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/Infrastructure/conf_mgmt_ansible/
+          tree /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC
+          
+          sudo ls /home/runner/work/DevOps-Interview-ACDevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/Infrastructure/conf_mgmt_ansible/
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
