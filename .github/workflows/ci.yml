@@ -16,7 +16,10 @@ jobs:
           echo ''
           sudo cp /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/Dockerfile /home/runner/app_content/Dockerfile
           sudo ls /home/runner/app_content/
-
+          #Install ansible
+          sudo apt install ansible -y
+          whoami
+          hostname
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
