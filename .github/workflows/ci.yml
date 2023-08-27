@@ -12,6 +12,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PA_TOKEN }}
         run: |
+          sudo su
           cd /home/runner/work/
           apt install tree -y
           tree
