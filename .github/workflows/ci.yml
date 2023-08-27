@@ -7,10 +7,8 @@ jobs:
     steps:
       - name: Clone test-app repo
         run: |
-          sudo su
           mkdir -p /srv/app
           chmod 755 /srv/app
-          exit
       - uses: actions/checkout@v3
         with:
           path: '/srv/app'
