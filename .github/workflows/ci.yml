@@ -7,13 +7,9 @@ jobs:
     steps:
       - name: Clone test-app repo
         uses: actions/checkout@v3
+        
 
-      - name: Run a multi-line script
+      - run: ls /home/runner/work/
         env:
-          GITHUB_TOKEN: ${{ secrets.PA_TOKEN }}
-        run: |
-          sudo su
-          cd /home/runner/work/
-          apt install tree -y
-          tree
-          ls /home/runner/work
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
