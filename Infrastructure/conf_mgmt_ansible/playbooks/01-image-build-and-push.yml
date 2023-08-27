@@ -8,11 +8,12 @@
       apt:
         update_cache: yes
 
-    - name: Provision Git, Java JRE
+    - name: Provision Git, Java JRE, ASP.NetCore
       apt:
         name:
-              - git
-              - openjdk-19-jdk
+              - "git"
+              - "openjdk-19-jdk"
+              - "aspnetcore-runtime-7.0"
     
     # - name: Provision other packages for .NetCore apps
     #   shell: |
@@ -66,11 +67,6 @@
     - name: Install .NetCore Runtime
       snap:
         name: dotnet-runtime-70
-        state: present
-
-    - name: Install ASP.NetCore Runtime
-      snap:
-        name: aspnetcore-runtime-7.0
         state: present
 
     - name: Install Nginx
