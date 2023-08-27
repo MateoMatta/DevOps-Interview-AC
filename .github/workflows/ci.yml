@@ -21,7 +21,7 @@ jobs:
           tree /home/runner/work/DevOps-Interview-AC
           tree /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC
           
-          sudo ls /home/runner/work/DevOps-Interview-ACDevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/Infrastructure/conf_mgmt_ansible/
+          sudo ls /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/Infrastructure/conf_mgmt_ansible/
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
