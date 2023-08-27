@@ -63,9 +63,9 @@
         apt-get -y install postgresql
     #Check its version with "psql --version"
 
-    - name: Install Nginx
+    - name: Install Apache
       apt:
-        name: nginx
+        name: apache2
         state: latest
     # - name: Creating folder for files.
     #   file:
@@ -75,18 +75,18 @@
     #     group: root
     #     mode: '0755'
 
-    - name: Copy index.html template to Nginx configuration
+    - name: Copy index.html template to Apache configuration
       copy:
-        src: ../../../Frontend/index.nginx-debian.html
+        src: ../../../Frontend/index.apache-debian.html
         dest: /var/www/html/
         owner: root
         group: root
         mode: '0644'
 
-    - name: Restarting service Nginx, in all cases
-      ansible.builtin.service:
-        name: nginx
-        state: restarted
+    # - name: Restarting service Apache, in all cases
+    #   ansible.builtin.service:
+    #     name: apache2
+    #     state: restarted
 
     # - name: Install Apache2
     #   shell: |
