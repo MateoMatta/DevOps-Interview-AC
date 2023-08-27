@@ -10,9 +10,7 @@ jobs:
 
       - name: Run a multi-line script
         run: |
-          #mkdir /home/runner/app_content
           cd /home/runner/work/
           apt install tree -y
           tree
-          #cp /home/runner/work/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/Infrastructure/conf_mgmt_ansible/Dockerfile /home/runner/app_content/Dockerfile
           ls /home/runner/work
