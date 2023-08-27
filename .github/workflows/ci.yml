@@ -14,5 +14,5 @@ jobs:
           path: '$HOME/app'
       - name: Run a multi-line script
         run: |
-          echo Hello,
+          echo $HOME
           ls $HOME/app
