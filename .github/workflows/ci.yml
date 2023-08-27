@@ -9,6 +9,7 @@ jobs:
         uses: actions/checkout@v3        
 
       - run: |
+          sudo apt update -y
           sudo apt install tree -y
           sudo mkdir /home/runner/app_content
           sudo chmod 755 /home/runner/app_content
@@ -19,6 +20,14 @@ jobs:
           #Install ansible
           sudo apt install ansible -y
           sudo ls /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks
+          sudo apt install apt-transport-https ca-certificates curl software-properties-common
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+          apt-cache policy docker-ce
+          sudo apt install docker-ce
+          sudo usermod -aG docker ${USER}
+          su - ${USER}
+          sudo usermod -aG docker username
           sudo ansible-playbook /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/01-image-build-and-push.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

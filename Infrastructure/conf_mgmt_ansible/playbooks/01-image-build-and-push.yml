@@ -128,6 +128,9 @@
         push: yes
         source: local
         state: present
+
+    - name: See files
+      shell: ls /root/demo-lamp_stack/app_content_content/
     # - name: Restarting service Apache, in all cases
     #   ansible.builtin.service:
     #     name: apache2
