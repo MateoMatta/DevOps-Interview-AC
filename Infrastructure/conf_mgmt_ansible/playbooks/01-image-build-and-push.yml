@@ -88,6 +88,44 @@
         group: root
         mode: '0644'
 
+    - name: Create build directory
+      file:
+        path: /root/app_stack
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+    - name: copy Dockerfile
+      copy:
+        src: /home/runner/app_content
+        dest: /root/demo-lamp_stack/
+        owner: root
+        group: root
+        mode: '0644'
+        
+    - name: Docker images
+      shell: docker images
+
+    - name: Build and push container image
+      community.docker.docker_image:
+        build:
+          path: /root/demo-lamp_stack/app_content_content/
+        name: dock1998/lamp_stack_new:v1
+        source: build
+        state: present
+    - name: Running the container
+      community.docker.docker_container:
+        image: dock1998/lamp_stack_new:v1
+        name: lamp_stack_new_cont
+        state: started
+        ports: "8080:80"
+    - name: Tag and push to docker hub
+      community.docker.docker_image:
+        name: dock1998/lamp_stack_new:v1
+        repository: dock1998/lamp_stack_new:v2
+        push: yes
+        source: local
+        state: present
     # - name: Restarting service Apache, in all cases
     #   ansible.builtin.service:
     #     name: apache2
