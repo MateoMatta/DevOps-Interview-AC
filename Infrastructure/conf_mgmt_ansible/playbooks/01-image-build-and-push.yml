@@ -55,17 +55,17 @@
         apt-get -y install postgresql
     #Check its version with "psql --version"
 
-    # - name: Install Nginx
-    #   apt:
-    #     name: nginx
-    #     state: latest
-    # # - name: Creating folder for files.
-    # #   file:
-    # #     path: /home/ubuntu/htmll/
-    # #     state: directory
-    # #     owner: root
-    # #     group: root
-    # #     mode: '0755'
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: latest
+    # - name: Creating folder for files.
+    #   file:
+    #     path: /home/ubuntu/htmll/
+    #     state: directory
+    #     owner: root
+    #     group: root
+    #     mode: '0755'
 
     - name: Copy index.html template to Nginx configuration
       copy:
@@ -75,10 +75,10 @@
         group: root
         mode: '0644'
 
-    # - name: Restarting service Nginx, in all cases
-    #   ansible.builtin.service:
-    #     name: nginx
-    #     state: restarted
+    - name: Restarting service Nginx, in all cases
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
 
     # - name: Install Apache2
     #   shell: |
