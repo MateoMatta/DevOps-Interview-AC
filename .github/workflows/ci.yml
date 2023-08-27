@@ -25,9 +25,6 @@ jobs:
           sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" -y
           apt-cache policy docker-ce
           sudo apt install docker-ce -y
-          sudo usermod -aG docker runner
-          su - runner
-          sudo usermod -aG docker runner
           sudo ansible-playbook /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/01-image-build-and-push.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
