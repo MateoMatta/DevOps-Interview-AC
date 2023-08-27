@@ -3,16 +3,21 @@
 - hosts: localhost
   connection: local
   become: true
+  become_user: root
+
   tasks:
     - name: Run the equivalent of "apt-get update"
       apt:
         update_cache: yes
 
-    - name: Provision Git, Java JRE
+    - name: Provision Git
       apt:
         name:
-              - 'git'
-              - 'openjdk-19-jdk'
+              - git
+
+    - name: Install Java
+      shell: |
+        apt install openjdk-17-jdk-headless --yes
 
     - name: Install .NetCore, ASP.NetCore
       shell: |
