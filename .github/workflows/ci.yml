@@ -18,10 +18,7 @@ jobs:
           echo '2nd ls'
           sudo ls /var/www/html/
           echo ''
-          tree /home/runner/work/DevOps-Interview-AC
-          tree /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC
-          
-          sudo ls /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/Infrastructure/conf_mgmt_ansible/
+          cp /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/Dockerfile /home/runner/app_content/Dockerfile
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
