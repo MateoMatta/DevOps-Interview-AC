@@ -10,8 +10,13 @@ jobs:
 
       - run: |
           sudo apt install tree -y
-          tree /home/runner/work/
-          ls /home/runner/work
+          sudo mkdir /home/runner/app_content
+          sudo chmod 755 /home/runner/app_content
+          echo ''
+          sudo ls /var/www/html/
+          sudo rm -f /var/www/html/index.html
+          sudo cp /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/Infrastructure/conf_mgmt_ansible/Dockerfile /home/runner/app_content/Dockerfile
+
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
