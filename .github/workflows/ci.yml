@@ -6,13 +6,11 @@ jobs:
 
     steps:
       - name: Clone test-app repo
-        run: |
-          mkdir -p /home/runner/app
-          chmod 755 /home/runner/app
-      - uses: actions/checkout@v3
-        with:
-          path: '/home/runner/app'
+        uses: actions/checkout@v3
+
       - name: Run a multi-line script
         run: |
           echo $HOME
           ls /home/runner/app
+          install ansible -y
+          ansible --version
