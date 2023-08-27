@@ -112,7 +112,7 @@ resource "aws_security_group" "demo-sg-01" {
 }
 
 # resource "aws_instance" "my_vm" {
-#   ami             = "ami-007855ac798b5175e" //Ubuntu AMI
+#   ami             = "ami-0261755bbcb8c4a84" //Ubuntu AMI
 #   instance_type   = "t2.micro"
 #   key_name        = "candidate"
 
@@ -141,7 +141,7 @@ resource "aws_autoscaling_group" "demo_autoscaling" {
 
 resource "aws_launch_configuration" "demo_configuration" {
   name                        = "placeholder-demo-lc"
-  image_id                    = "ami-007855ac798b5175e"
+  image_id                    = "ami-0261755bbcb8c4a84"
   instance_type               = "t2.micro"
   security_groups             = [aws_security_group.demo-sg-01.id]
   associate_public_ip_address = true
