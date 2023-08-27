@@ -15,4 +15,4 @@ jobs:
       - name: Run a multi-line script
         run: |
           echo $HOME
-          ls $HOME/app
+          ls /home/runner/app
