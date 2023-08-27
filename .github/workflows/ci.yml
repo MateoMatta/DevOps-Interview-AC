@@ -12,5 +12,5 @@ jobs:
         run: |
           echo $HOME
           ls /home/runner/work
-          install ansible -y
+          apt install ansible -y
           ansible --version
