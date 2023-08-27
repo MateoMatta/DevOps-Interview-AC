@@ -102,9 +102,11 @@
         owner: root
         group: root
         mode: '0644'
-        
+
     - name: Docker images
-      shell: docker images
+      shell: |
+        docker --version
+        docker images
 
     - name: Build and push container image
       community.docker.docker_image:
