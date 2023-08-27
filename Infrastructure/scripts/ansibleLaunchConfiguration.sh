@@ -12,9 +12,9 @@ sudo apt install ansible -y
 
 #Run Ansible playbook
 cd /srv/app/Infrastructure/conf_mgmt_ansible/playbooks
-sudo su #Just for ec2 machine, not container
-ansible-playbook 01-image-build-and-push.yml
-exit #Just for ec2 machine, not container
+# sudo su #Just for ec2 machine, not container
+ansible-playbook 01-image-build-and-push.yml -u root
+# exit #Just for ec2 machine, not container
 
 # #Run nginx-test-app server
 # cd /srv/app/test-app

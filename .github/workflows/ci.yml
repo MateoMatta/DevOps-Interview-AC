@@ -19,7 +19,7 @@ jobs:
           #Install ansible
           sudo apt install ansible -y
           whoami
-          hostname
+          hostname  
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
