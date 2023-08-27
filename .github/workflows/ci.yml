@@ -10,7 +10,7 @@ jobs:
 
       - name: Run a multi-line script
         run: |
-          cd /home/runner/work/
-          apt install tree -y
+          sudo cd /home/runner/work/
+          sudo apt install tree -y
           tree
           ls /home/runner/work
