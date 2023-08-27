@@ -8,7 +8,7 @@
       apt:
         update_cache: yes
 
-    - name: Provision Git, Java JRE, and .NetCore
+    - name: Provision Git, Java JRE
       apt:
         name:
               - git
@@ -54,6 +54,24 @@
         apt-get update -y
         apt-get -y install postgresql
     #Check its version with "psql --version"
+
+
+    - name: Install .NetCore
+      snap:
+        name: dotnet-sdk 
+        channel: 7.0
+        classic: yes
+        state: present
+  
+    - name: Install .NetCore Runtime
+      snap:
+        name: dotnet-runtime-70
+        state: present
+
+    - name: Install ASP.NetCore Runtime
+      snap:
+        name: aspnetcore-runtime-7.0
+        state: present
 
     - name: Install Nginx
       apt:
