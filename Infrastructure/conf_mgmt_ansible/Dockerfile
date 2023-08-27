@@ -18,8 +18,7 @@ RUN git clone https://github.com/MateoMatta/DevOps-Interview-AC /srv/app
 RUN apt install ansible -y
 
 #Run Ansible playbook
-RUN cd /srv/app/Infrastructure/conf_mgmt_ansible/playbooks
-RUN ansible-playbook 01-image-build-and-push.yml
+RUN ansible-playbook /srv/app/Infrastructure/conf_mgmt_ansible/playbooks/01-image-build-and-push.yml
 
 # Prerequisites for installing php7.3
 RUN apt-get install -y software-properties-common
