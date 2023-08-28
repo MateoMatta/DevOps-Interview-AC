@@ -44,7 +44,7 @@ jobs:
         
       - run: |
           docker images
-          docker run -d -p 8080:80 --name 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry:latest test-app
+          docker run -d -p 8080:80 --name 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry
           curl localhost:8080
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
