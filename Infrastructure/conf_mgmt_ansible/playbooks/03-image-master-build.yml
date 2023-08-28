@@ -1,0 +1,27 @@
+---
+# Playbook to build container
+- hosts: localhost
+  connection: local
+  become: true
+  become_user: root
+
+  tasks:
+    - name: Create build directory
+      file:
+        path: /root/app_stack
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+    - name: copy Dockerfile
+      copy:
+        src: /home/runner/app_content
+        dest: /root/demo-lamp_stack/
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Docker images
+      shell: |
+        docker --version
+        docker images
