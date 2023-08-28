@@ -26,5 +26,5 @@
         sudo ./aws/install
     
     - name: Pull Webserver docker image and run it as container 
-      shell: sudo docker run -d -p 80:80 --name httpd httpd
+      shell: docker run -d -p 80:80 --name httpd httpd
         
