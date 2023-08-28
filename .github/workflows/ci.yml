@@ -28,6 +28,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build-and-push:
+    needs: docker-install-and-preliminar-config
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
