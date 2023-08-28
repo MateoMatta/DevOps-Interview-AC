@@ -33,13 +33,39 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
+
       - uses: vitr/actions-build-and-upload-to-ecs@master      
         with:
           access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           account_id: ${{ secrets.AWS_ACCOUNT_ID }}
           repo: main-applications-registry
-          region: us-east-1
+          region: ${{ env.AWS_REGION }}
           tags: latest,${{ github.sha }}
           create_repo: true
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-20.04  
+    steps:          
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        
+      - run: |
+          docker pull 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry:latest
+          docker run -d -p 8080:80 --name test-app test-app
+          curl localhost:8080
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+          
         

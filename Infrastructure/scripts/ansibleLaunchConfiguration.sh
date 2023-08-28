@@ -12,12 +12,13 @@ mkdir test
 chmod 644 test
 cd test
 
+#Install Docker
 
 #Install ansible
-sudo apt install ansible -y
+# sudo apt install ansible -y
 
 #Run Ansible playbook
-cd /srv/app/Infrastructure/conf_mgmt_ansible/playbooks
+# cd /srv/app/Infrastructure/conf_mgmt_ansible/playbooks
 # sudo su #Just for ec2 machine, not container
 # ansible-playbook 01-image-build-and-push.yml
 # exit #Just for ec2 machine, not container
