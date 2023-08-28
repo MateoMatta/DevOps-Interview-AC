@@ -13,6 +13,6 @@ jobs:
           sudo mkdir /home/runner/app_content
           sudo chmod 755 /home/runner/app_content
           echo ''
-          sudo ls /home/runner/app_content/
+          sudo ls /home/runner/
 
         
