@@ -1,4 +1,6 @@
 # Dockerfile for app stack installation
+# To build locally the image, use: sudo docker build --no-cache -t test-app .
+# To run locally the image, use: docker run -d -p 8080:80 --name test-app test-app
 # Ubuntu 20.04 image
 FROM ubuntu:20.04
 
@@ -52,8 +54,10 @@ RUN rm -f /var/www/html/index.html
 
 RUN cp /srv/app/Frontend/index.apache-debian.html /var/www/html/
 
+RUN echo '        RedirectMatch 303 ^/?$ /index.apache-debian.html' >> /etc/apache2/sites-enabled/000-default.conf
+
 # Restart apache
-RUN service apache2 restart
+RUN service apache2 reload
 
 # Provide executable permissions to the code
 RUN chmod -R 0777 /var/www/html/*
