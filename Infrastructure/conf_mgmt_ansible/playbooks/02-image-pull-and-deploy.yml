@@ -1,0 +1,8 @@
+---
+# Playbook to deploy the app
+- hosts: localhost
+  connection: local
+  become: true
+  become_user: root
+
+  tasks:
