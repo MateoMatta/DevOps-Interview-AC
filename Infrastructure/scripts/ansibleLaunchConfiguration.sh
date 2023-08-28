@@ -21,6 +21,8 @@ sudo cp ./Dockerfile /home/runner/app_content/Dockerfile
 sudo ls /home/runner/app_content/
 #Install ansible
 sudo apt install ansible -y
+#Run Ansible playbook
+#ansible-playbook ./Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml -e ansible_password='{{ lookup("env", "ANSIBLE_PASSWORD", "OTHER_PASSWORD") }}'
 sudo ls /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks
 sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -45,8 +47,6 @@ sudo docker run -d -p 80:80 --name httpd httpd
 #Install ansible
 # sudo apt install ansible -y
 
-#Run Ansible playbook
-# cd /srv/app/Infrastructure/conf_mgmt_ansible/playbooks
 # sudo su #Just for ec2 machine, not container
 # ansible-playbook 01-image-build-and-push.yml
 # exit #Just for ec2 machine, not container

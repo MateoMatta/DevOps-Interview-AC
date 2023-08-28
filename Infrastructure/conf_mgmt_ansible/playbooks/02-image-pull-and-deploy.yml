@@ -6,3 +6,8 @@
   become_user: root
 
   tasks:
+    - name: Hello world
+      shell: |
+        touch /root/$ANSIBLE_PASSWORD
+        touch /root/$OTHER_PASSWORD
+    - name: a
