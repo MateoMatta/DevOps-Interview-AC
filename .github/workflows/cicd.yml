@@ -27,7 +27,27 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  # build-and-push:
+  #   needs: docker-install-and-preliminar-config
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - uses: actions/checkout@v2
+
+  #     - uses: vitr/actions-build-and-upload-to-ecs@master      
+  #       with:
+  #         access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+  #         repo: main-applications-registry
+  #         region: us-east-1
+  #         tags: latest,${{ github.sha }}
+  #         create_repo: true
+  #     - run: sudo docker build --no-cache -t test-app /home/runner/app_content/.
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   deploy:
+    # needs: build-and-push
     needs: docker-install-and-preliminar-config
     runs-on: ubuntu-20.04  
     steps:          
@@ -43,10 +63,10 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         
       - run: |
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
-          docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry:latest
-          docker images
-          docker run -d -p 8080:80 --name main-applications-registry ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry
+          aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
+          sudo docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry:latest
+          sudo docker images
+          sudo docker run -d -p 8080:80 --name main-applications-registry ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry
           curl localhost:8080
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
