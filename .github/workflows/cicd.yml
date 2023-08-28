@@ -46,7 +46,7 @@ jobs:
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
           docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry:latest
           docker images
-          docker run -d -p 8080:80 --name 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry test-app
+          docker run -d -p 8080:80 --name main-applications-registry ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry
           curl localhost:8080
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
