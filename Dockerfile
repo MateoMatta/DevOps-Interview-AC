@@ -57,7 +57,7 @@ RUN cp /srv/app/Frontend/index.apache-debian.html /var/www/html/
 RUN echo '        RedirectMatch 303 ^/?$ /index.apache-debian.html' >> /etc/apache2/sites-enabled/000-default.conf
 
 # Restart apache
-RUN service apache2 reload
+RUN service apache2 restart
 
 # Provide executable permissions to the code
 RUN chmod -R 0777 /var/www/html/*
