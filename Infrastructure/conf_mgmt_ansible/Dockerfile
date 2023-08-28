@@ -18,7 +18,7 @@ RUN git clone https://github.com/MateoMatta/DevOps-Interview-AC /srv/app
 RUN apt install ansible -y
 
 # Install apache
-RUN apt-get install -y apache2 
+RUN apt-get install apache2 -y
 
 # Prerequisites for installing php7.3
 RUN apt-get install -y software-properties-common
