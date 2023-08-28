@@ -10,10 +10,11 @@ jobs:
 
       - run: |
           sudo apt update -y
+          sudo apt install git -y
           sudo mkdir /home/runner/app_content
           sudo chmod 755 /home/runner/app_content
           echo ''
-          sudo cp /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/Dockerfile /home/runner/app_content/Dockerfile
+          sudo cp ./Dockerfile /home/runner/app_content/Dockerfile
           sudo ls /home/runner/app_content/
           #Install ansible
           sudo apt install ansible -y
@@ -32,15 +33,13 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - name: Clone test-app repo
-        uses: vitr/actions-build-and-upload-to-ecs@master
-      
+      - uses: vitr/actions-build-and-upload-to-ecs@master
         with:
           access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           account_id: ${{ secrets.AWS_ACCOUNT_ID }}
-          repo: main-applications-registry
-          region: us-east-1
+          repo: aws-ecr-repo
+          region: ap-northeast-2
           tags: latest,${{ github.sha }}
-          create_repo: false
+          create_repo: true
         
