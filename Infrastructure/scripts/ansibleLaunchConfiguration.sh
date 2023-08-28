@@ -22,18 +22,10 @@ sudo ls /home/runner/app_content/
 #Install ansible
 sudo apt install ansible -y
 #Run Ansible playbook
-#ansible-playbook ./Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml -e ansible_password='{{ lookup("env", "ANSIBLE_PASSWORD", "OTHER_PASSWORD") }}'
-sudo ls /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks
-sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" -y
-sudo apt-cache policy docker-ce
-sudo apt install docker-ce -y
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-sudo apt install unzip -y
-unzip awscliv2.zip
-sudo ./aws/install
-sudo docker run -d -p 80:80 --name httpd httpd
+ansible-playbook /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml -e ansible_password='{{ lookup("env", "ANSIBLE_PASSWORD", "OTHER_PASSWORD") }}'
+
+#sudo ls /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks
+
 
 #AWS_ACCESS_KEY_ID=123 AWS_SECRET_ACCESS_KEY=3456 aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 729158664723.dkr.ecr.us-east-1.amazonaws.com
 #sudo docker run -d -p 80:80 --name main-applications-registry 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry

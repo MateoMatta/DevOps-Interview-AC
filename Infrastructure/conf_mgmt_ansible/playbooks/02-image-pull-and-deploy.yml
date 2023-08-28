@@ -10,4 +10,21 @@
       shell: |
         touch /root/$ANSIBLE_PASSWORD
         touch /root/$OTHER_PASSWORD
-    - name: a
+    - name: Install docker
+      shell: |
+        sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" -y
+        sudo apt-cache policy docker-ce
+        sudo apt install docker-ce -y
+    
+    - name: Install AWS CLI v2
+      shell: |
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        sudo apt install unzip -y
+        unzip awscliv2.zip
+        sudo ./aws/install
+    
+    - name: Pull Webserver docker image and run it as container 
+      shell: sudo docker run -d -p 80:80 --name httpd httpd
+        
