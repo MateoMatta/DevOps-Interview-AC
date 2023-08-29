@@ -62,7 +62,7 @@ jobs:
           sudo docker run -d -p 80:80 --name main-applications-registry 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry
           sudo docker ps
           wget localhost:80
-          cat index.html
+          sudo cat index.html
           echo 'Done'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

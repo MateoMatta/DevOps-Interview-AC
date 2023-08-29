@@ -65,7 +65,7 @@ RUN cp /srv/app/Frontend/000-default.conf /etc/apache2/sites-enabled/
 # (lightest image) 
 # RUN apt purge ansible --auto-remove --yes
 # Safe image (better) 
-RUN apt purge ansible
+RUN apt purge ansible --yes
 
 # Restart apache
 RUN service apache2 restart
