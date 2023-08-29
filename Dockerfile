@@ -1,6 +1,8 @@
 # Dockerfile for app stack installation
 # To build locally the image, use: sudo docker build --no-cache -t test-app .
 # To run locally the image, use: docker run -d -p 8080:80 --name test-app test-app
+# Or
+# sudo docker run -dit --name my-apache-app -p 80:80 -v "$PWD":/usr/local/apache2/htdocs/ httpd
 # Ubuntu 20.04 image
 FROM httpd
 
