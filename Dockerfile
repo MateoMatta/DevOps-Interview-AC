@@ -57,8 +57,8 @@ RUN ansible-playbook /srv/app/Infrastructure/conf_mgmt_ansible/playbooks/01-imag
 RUN rm -f /var/www/html/index.html
 
 RUN cp /srv/app/Frontend/index.apache-debian.html /var/www/html/
+RUN cp /srv/app/Frontend/000-default.conf /etc/apache2/sites-enabled/
 
-RUN echo '        RedirectMatch 303 ^/?$ /index.apache-debian.html' >> /etc/apache2/sites-enabled/000-default.conf
 
 # (lightest image) 
 RUN apt purge ansible --auto-remove --yes
