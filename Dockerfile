@@ -61,9 +61,9 @@ RUN cp /srv/app/Frontend/index.apache-debian.html /var/www/html/
 RUN echo '        RedirectMatch 303 ^/?$ /index.apache-debian.html' >> /etc/apache2/sites-enabled/000-default.conf
 
 # (lightest image) 
-# RUN apt-get purge ansible --auto-remove
+RUN apt purge ansible --auto-remove
 # Safe image (better) 
-RUN apt-get purge ansible
+# RUN apt purge ansible
 
 # Restart apache
 RUN service apache2 restart
