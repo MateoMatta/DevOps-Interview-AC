@@ -68,6 +68,7 @@ jobs:
         
       - run: |
           sudo ansible-playbook /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
+          
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # export AWS_ACCOUNT_ID=$(aws secretsmanager get-secret-value --secret-id app/AWS_ACCOUNT_ID | jq -r .SecretString)
