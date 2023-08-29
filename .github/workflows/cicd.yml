@@ -71,6 +71,7 @@ jobs:
       - run: |
           sudo apt update -y
           sudo apt install ansible -y
+          sudo apt install tree -y
           sudo tree /home/runner/DevOps-Interview-AC/          
           ansible-playbook /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
         env:
