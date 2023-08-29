@@ -20,9 +20,9 @@ RUN git clone https://github.com/MateoMatta/DevOps-Interview-AC /srv/app
 RUN apt install ansible -y
 
 # Install apache
-RUN apt install apache2 -y
+RUN apt-get install apache2 -y
 
-RUN apt install apache2-utils --yes
+RUN apt-get install apache2-utils --yes
 
 RUN apt clean 
 
