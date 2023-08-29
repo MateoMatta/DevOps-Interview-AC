@@ -6,7 +6,7 @@ jobs:
 
     steps:
       - name: Clone test-app repo
-        uses: actions/checkout@v3        
+        uses: actions/checkout@v2     
 
       - run: |
           sudo apt update -y
