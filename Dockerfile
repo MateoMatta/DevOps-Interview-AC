@@ -45,9 +45,9 @@ RUN apt purge ansible --yes
 RUN service apache2 restart
 
 # Provide executable permissions to the code
-RUN chmod -R 0777 /var/www/html/*
-RUN chmod -R 0777 /var/*
+RUN chmod -R 0777 /usr/local/apache2/htdocs/*
+RUN chmod -R 0777 /usr/*
 
 # Change WORKDIR
-WORKDIR /var/www/html
+WORKDIR /usr/local/apache2/htdocs/
 
