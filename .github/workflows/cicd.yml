@@ -67,6 +67,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         
       - run: |
+          tree /home/runner/.
           ansible-playbook /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
