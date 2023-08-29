@@ -42,7 +42,9 @@ jobs:
           region: us-east-1
           tags: latest,${{ github.sha }}
           create_repo: true
-      - run: sudo docker build --no-cache -t test-app /home/runner/app_content/.
+      - run: |
+          ls /home/runner/
+          sudo docker build --no-cache -t test-app .
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
