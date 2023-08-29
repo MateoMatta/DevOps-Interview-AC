@@ -22,7 +22,7 @@ RUN apt install ansible -y
 # Install apache
 RUN apt-get install apache2 -y
 
-RUN apt install –y apache2-utils 
+RUN apt install apache2-utils –y 
 RUN apt clean 
 
 # # Prerequisites for installing php7.3
