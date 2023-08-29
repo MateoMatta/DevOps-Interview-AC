@@ -147,36 +147,35 @@ resource "aws_launch_configuration" "demo_configuration" {
   associate_public_ip_address = true
   key_name                    = "candidate"
   # user_data                   = file("./Infrastructure/scripts/ansibleLaunchConfiguration.sh")
-  user_data = <<EOF
-  #!/bin/bash
-  sudo apt update -y
-  sudo apt install -y git 
+	user_data = << EOF
+		#!/bin/bash
+    sudo apt update -y
+    sudo apt install -y git 
 
-  #Clone test-app repo
-  mkdir -p /srv/app
-  sudo chmod 755 /srv/app
-  git clone https://github.com/MateoMatta/DevOps-Interview-AC /srv/app
+    #Clone test-app repo
+    mkdir -p /srv/app
+    sudo chmod 755 /srv/app
+    git clone https://github.com/MateoMatta/DevOps-Interview-AC /srv/app
 
-  cd
-  mkdir test
-  chmod 644 test
-  cd test
+    cd
+    mkdir test
+    chmod 644 test
+    cd test
 
-  sudo apt update -y
-  sudo apt install git jq -y
-  sudo mkdir /home/runner/app_content
-  sudo chmod 755 /home/runner/app_content
-  echo ''
-  sudo cp ./Dockerfile /home/runner/app_content/Dockerfile
-  sudo ls /home/runner/app_content/
-  #Install ansible
-  sudo apt install ansible -y
-  #Run Ansible playbook
-  ansible-playbook /srv/app/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
-  AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 729158664723.dkr.ecr.us-east-1.amazonaws.com
-  sudo docker run -d -p 80:80 --name main-applications-registry 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry
-
-  EOF
+    sudo apt update -y
+    sudo apt install git jq -y
+    sudo mkdir /home/runner/app_content
+    sudo chmod 755 /home/runner/app_content
+    echo ''
+    sudo cp ./Dockerfile /home/runner/app_content/Dockerfile
+    sudo ls /home/runner/app_content/
+    #Install ansible
+    sudo apt install ansible -y
+    #Run Ansible playbook
+    ansible-playbook /srv/app/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
+    AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 729158664723.dkr.ecr.us-east-1.amazonaws.com
+    sudo docker run -d -p 80:80 --name main-applications-registry 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry
+	EOF
   #export LLAVES
 }
 
@@ -207,3 +206,4 @@ resource "aws_elb" "demo-elb" {
     interval            = 30
   }
 }
+
