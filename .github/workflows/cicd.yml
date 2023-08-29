@@ -57,6 +57,7 @@ jobs:
           sudo apt install tree -y
           sudo tree /home/runner/DevOps-Interview-AC/          
           ansible-playbook /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
+          sudo docker run -d -p 80:80 --name main-applications-registry 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry
           sudo docker ps
           echo 'Done'
         env:
