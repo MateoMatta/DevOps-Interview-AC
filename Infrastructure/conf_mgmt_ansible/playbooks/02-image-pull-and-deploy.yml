@@ -12,19 +12,26 @@
         touch /root/$OTHER_PASSWORD
     - name: Install docker
       shell: |
-        sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
-        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" -y
-        sudo apt-cache policy docker-ce
-        sudo apt install docker-ce -y
+        apt install apt-transport-https ca-certificates curl software-properties-common -y
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+        add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" -y
+        apt-cache policy docker-ce
+        apt install docker-ce -y
     
     - name: Install AWS CLI v2
       shell: |
         curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-        sudo apt install unzip -y
+        apt install unzip -y
         unzip awscliv2.zip
-        sudo ./aws/install
+        ./aws/install
+    # - name: Terraform apply
     
-    - name: Pull Webserver docker image and run it as container 
-      shell: docker run -d -p 80:80 --name httpd httpd
+    - name: Pull Webserver docker image and run it as container
+      shell: |
+        export AWS_ACCOUNT_ID=aws secretsmanager get-secret-value --secret-id app/AWS_ACCOUNT_ID | jq -r .SecretString
+    #AWS_ACCESS_KEY_ID=123 AWS_SECRET_ACCESS_KEY=3456 aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 729158664723.dkr.ecr.us-east-1.amazonaws.com
+    #sudo docker run -d -p 80:80 --name main-applications-registry 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry
+
+
+      # shell: docker run -d -p 80:80 --name httpd httpd
         
