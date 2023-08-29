@@ -5,8 +5,8 @@
 FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update -y
-RUN apt-get upgrade -y
+RUN apt update -y
+RUN apt upgrade -y
 
 # Install Git
 RUN apt install -y git 
@@ -20,9 +20,9 @@ RUN git clone https://github.com/MateoMatta/DevOps-Interview-AC /srv/app
 RUN apt install ansible -y
 
 # Install apache
-RUN apt-get install apache2 -y
+RUN apt install apache2 -y
 
-RUN apt-get install apache2-utils --yes
+RUN apt install apache2-utils --yes
 
 RUN apt clean 
 
