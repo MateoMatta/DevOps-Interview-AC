@@ -8,7 +8,7 @@ jobs:
       - run: |
           sudo echo $GITHUB_WORKSPACE
       - name: Clone test-app repo
-        uses: actions/checkout@v3    
+        uses: actions/checkout@v3 
 
       - run: |
           sudo apt update -y
