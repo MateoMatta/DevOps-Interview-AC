@@ -47,8 +47,8 @@ RUN ufw app list
 # RUN apt-get install libapache2-mod-php7.3
 
 
-# install additional packages
-RUN a2dismod mpm_event &&  a2enmod mpm_prefork &&  a2enmod php7.3
+# # install additional packages
+# RUN a2dismod mpm_event &&  a2enmod mpm_prefork &&  a2enmod php7.3
 
 #Run Ansible playbook
 RUN ansible-playbook /srv/app/Infrastructure/conf_mgmt_ansible/playbooks/01-image-build-and-push.yml
