@@ -13,8 +13,6 @@
         add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" -y
         apt-cache policy docker-ce
         apt install docker-ce -y
-
-        /srv/app/Infrastructure/conf_mgmt_ansible/playbooks
     
     - name: Install AWS CLI v2
       shell: |
