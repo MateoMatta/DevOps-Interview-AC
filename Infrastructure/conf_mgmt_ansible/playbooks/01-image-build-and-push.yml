@@ -30,11 +30,12 @@
       shell: |
         apt update -y
         apt upgrade -y
-        apt install software-properties-common apt-transport-https wget --yes
+        apt install software-properties-common apt-transport-https wget apt-utils --yes
         wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | apt-key add -
-        add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+        add-apt-repository --yes "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
         apt install code -y
         
+
     - name: Install Maven using Ansible
       apt:
         name: "{{ packages }}"
