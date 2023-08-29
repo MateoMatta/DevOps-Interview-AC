@@ -42,7 +42,7 @@ RUN cp /srv/app/Frontend/000-default.conf /usr/local/apache2/conf/
 RUN apt purge ansible --yes
 
 # Restart apache
-RUN service apache2 restart
+RUN apachectl -k restart
 
 # Provide executable permissions to the code
 RUN chmod -R 0777 /usr/local/apache2/htdocs/*
@@ -50,4 +50,6 @@ RUN chmod -R 0777 /usr/*
 
 # Change WORKDIR
 WORKDIR /usr/local/apache2/htdocs/
+
+CMD ["apachectl","-D","FOREGROUND"]
 
