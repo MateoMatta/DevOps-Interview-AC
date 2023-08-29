@@ -6,7 +6,7 @@ jobs:
 
     steps:
       - run: |
-          sudo echo $GITHUB_WORKSPACE
+          sudo ls $GITHUB_WORKSPACE
       - name: Clone test-app repo
         uses: actions/checkout@v3 
 
