@@ -13,7 +13,7 @@ chmod 644 test
 cd test
 
 sudo apt update -y
-sudo apt install git -y
+sudo apt install git jq -y
 sudo mkdir /home/runner/app_content
 sudo chmod 755 /home/runner/app_content
 echo ''
@@ -22,8 +22,8 @@ sudo ls /home/runner/app_content/
 #Install ansible
 sudo apt install ansible -y
 #Run Ansible playbook
-# ansible-playbook /srv/app/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml -e ansible_password='{{ lookup("env", "ANSIBLE_PASSWORD", "OTHER_PASSWORD") }}'
-ansible-playbook /srv/app/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
+ansible-playbook /srv/app/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml -e ansible_password='{{ lookup("env", "ANSIBLE_PASSWORD", "OTHER_PASSWORD") }}'
+#ansible-playbook /srv/app/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
 
 #sudo ls /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks
 
