@@ -26,24 +26,6 @@
         apt install dotnet-runtime-7.0 --yes
         apt-get install lynx --yes
 
-
-    # - name: Provision other packages for .NetCore apps
-    #   shell: |
-    #     # apt-get update -y && apt-get install -yqq daemonize dbus-user-session fontconfig
-    #     # daemonize /usr/bin/unshare --fork --pid --mount-proc /lib/systemd/systemd --system-unit=basic.target exec nsenter -t $(pidof systemd) -a su - $LOGNAME
-    #     # apt install wget -y
-    #     # wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-    #     # dpkg -i packages-microsoft-prod.deb
-    #     apt update -y
-    #     apt install apt-transport-https -y
-    #     apt update -y
-    #     apt install dotnet-sdk-6.0
-    # - name: Provision the rest of packages properly for .NetCore apps
-    #   apt:
-    #     name:
-    #           - dotnet-runtime-6.0
-    #           - aspnetcore-runtime-6.0
-
     - name: Install VSCode
       shell: |
         apt install software-properties-common apt-transport-https wget --yes
@@ -59,7 +41,6 @@
         packages:
            - maven
 
-
     - name: Install PostgreSQL
       shell: |
         sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
@@ -68,19 +49,5 @@
         apt-get -y install postgresql
     #Check its version with "psql --version"
 
-    # - name: See files
-    #   shell: ls /root/demo-lamp_stack/app_content_content/
-
-
-    # - name: Restarting service Apache, in all cases
-    #   ansible.builtin.service:
-    #     name: apache2
-    #     state: restarted
-
-    # - name: Install Apache2
-    #   shell: |
-    #     apt-get install apache2 -y
-    #     apt install snapd -y
-    #     snap install dotnet-sdk
 
 
