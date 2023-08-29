@@ -6,11 +6,10 @@ jobs:
 
     steps:
       - name: Clone test-app repo
-        uses: actions/checkout@v2     
-
-      - run: |
+        run: |
           sudo apt update -y
           sudo apt install git -y
+          git clone https://github.com/MateoMatta/DevOps-Interview-AC /home/runner 
           sudo mkdir /home/runner/app_content
           sudo chmod 755 /home/runner/app_content
           echo ''
@@ -68,7 +67,7 @@ jobs:
         
       - run: |
           tree /home/runner/.
-          ansible-playbook /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
+          ansible-playbook /home/runner/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # export AWS_ACCOUNT_ID=$(aws secretsmanager get-secret-value --secret-id app/AWS_ACCOUNT_ID | jq -r .SecretString)
