@@ -1,7 +1,7 @@
 name: CICD
 on: [workflow_dispatch]
 jobs:
-  docker-install-and-preliminar-config:
+  build-and-push:
     runs-on: ubuntu-20.04
 
     steps:
@@ -19,30 +19,23 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # build-and-push:
-  #   needs: docker-install-and-preliminar-config
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #     - uses: actions/checkout@v2
-
-  #     - uses: vitr/actions-build-and-upload-to-ecs@master      
-  #       with:
-  #         access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #         secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #         account_id: ${{ secrets.AWS_ACCOUNT_ID }}
-  #         repo: main-applications-registry
-  #         region: us-east-1
-  #         tags: latest,${{ github.sha }}
-  #         create_repo: true
-  #     - run: |
-  #         ls /home/runner/
-  #         sudo docker build --no-cache -t test-app .
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: vitr/actions-build-and-upload-to-ecs@master      
+        with:
+          access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+          repo: main-applications-registry
+          region: us-east-1
+          tags: latest,${{ github.sha }}
+          create_repo: true
+      - run: |
+          ls /home/runner/
+          sudo docker build --no-cache -t test-app .
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
-    # needs: build-and-push
-    needs: docker-install-and-preliminar-config
+    needs: build-and-push
     runs-on: ubuntu-20.04  
     steps:
       - name: Clone test-app repo
