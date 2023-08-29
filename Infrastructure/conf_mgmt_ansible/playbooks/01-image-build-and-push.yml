@@ -28,11 +28,13 @@
 
     - name: Install VSCode
       shell: |
+        apt update -y
+        apt upgrade -y
         apt install software-properties-common apt-transport-https wget --yes
         wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | apt-key add -
-        add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" --yes
-        apt install code --yes
-
+        add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+        apt install code -y
+        
     - name: Install Maven using Ansible
       apt:
         name: "{{ packages }}"
