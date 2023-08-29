@@ -28,7 +28,7 @@ ansible-playbook /srv/app/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pu
 #AWS_ACCESS_KEY_ID=123 AWS_SECRET_ACCESS_KEY=3456 aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 729158664723.dkr.ecr.us-east-1.amazonaws.com
 #sudo docker run --name main-applications-registry -p 80:80 -d 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry
 # ----------- or -----------------
-sudo docker run -d -p 80:80 --name httpd httpd
+sudo docker run -p 80:80 --name -d httpd httpd
 
 
 
