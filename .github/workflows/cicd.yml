@@ -12,6 +12,7 @@ jobs:
           sudo apt update -y
           sudo mkdir /home/runner/app_content
           sudo chmod 755 /home/runner/app_content
+          sudo touch /home/runner/app_content/stillExists
           echo ''
           sudo cp ./Dockerfile /home/runner/app_content/Dockerfile
           sudo ls /home/runner/app_content/
@@ -65,6 +66,7 @@ jobs:
           sudo tree /home/runner/DevOps-Interview-AC/          
           ansible-playbook /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
           sudo docker ps
+          sudo ls /home/runner/app_content/
           echo 'Done'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
