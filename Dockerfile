@@ -33,7 +33,7 @@ RUN ls /usr/local/apache2/htdocs/
 RUN rm -f /usr/local/apache2/htdocs/index.html
 
 RUN cp /srv/app/Frontend/index.apache-debian.html /usr/local/apache2/htdocs
-RUN cp /srv/app/Frontend/000-default.conf /etc/apache2/sites-enabled/
+RUN cp /srv/app/Frontend/000-default.conf /usr/local/apache2/conf/
 
 
 # (lightest image) 
