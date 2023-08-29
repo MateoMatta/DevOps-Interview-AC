@@ -10,15 +10,12 @@ jobs:
 
       - run: |
           sudo apt update -y
-          sudo apt install git -y
-          sudo cp -r /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC /home/runner/
           sudo mkdir /home/runner/app_content
           sudo chmod 755 /home/runner/app_content
           echo ''
           sudo cp ./Dockerfile /home/runner/app_content/Dockerfile
           sudo ls /home/runner/app_content/
           #Install ansible
-          sudo apt install ansible -y
           echo 'Here'
           sudo ls /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks
           sudo apt install tree -y
@@ -56,7 +53,10 @@ jobs:
     # needs: build-and-push
     needs: docker-install-and-preliminar-config
     runs-on: ubuntu-20.04  
-    steps:          
+    steps:
+      - name: Clone test-app repo
+        uses: actions/checkout@v3   
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -69,8 +69,10 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         
       - run: |
-          tree /home/runner/DevOps-Interview-AC/
-          sudo ansible-playbook /home/runner/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
+          sudo apt update -y
+          sudo apt install ansible -y
+          sudo tree /home/runner/DevOps-Interview-AC/          
+          ansible-playbook /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # export AWS_ACCOUNT_ID=$(aws secretsmanager get-secret-value --secret-id app/AWS_ACCOUNT_ID | jq -r .SecretString)
