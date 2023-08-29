@@ -5,10 +5,9 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+      - run: sudo rm -rf /home/runner/work/DevOps-Interview-AC
       - name: Clone test-app repo
-        uses: actions/checkout@v3
-        with:
-          path: '/home/runner/work'     
+        uses: actions/checkout@v3    
 
       - run: |
           sudo apt update -y
