@@ -5,7 +5,8 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - run: sudo rm -rf /home/runner/work/DevOps-Interview-AC
+      - run: |
+          sudo echo $GITHUB_WORKSPACE
       - name: Clone test-app repo
         uses: actions/checkout@v3    
 
