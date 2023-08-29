@@ -6,10 +6,6 @@
   become_user: root
 
   tasks:
-    - name: Hello world
-      shell: |
-        touch /root/$TEST1
-        touch /root/$TEST2
     - name: Install docker
       shell: |
         apt install apt-transport-https ca-certificates curl software-properties-common -y
@@ -24,6 +20,7 @@
         apt install unzip -y
         unzip awscliv2.zip
         ./aws/install
+        
     # - name: Terraform apply
     
     - name: Pull Webserver docker image and run it as container
