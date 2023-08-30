@@ -99,8 +99,7 @@ jobs:
           sudo ls -l /home/runner/.aws/
           echo 'Other'
           sudo cat /home/runner/.aws/config
-          sudo cat /home/runner/.aws/credentials
-          sudo aws sts get-caller-identity
+          sudo cat /home/runner/.aws/credentials; aws sts get-caller-identity
           echo 'Identified'
           cd $PREVIOUS_LOCATION
           sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
