@@ -86,7 +86,7 @@ jobs:
           sudo sed 's/REPLACE/\n/g' temporalFile.pem > candidate.pem
           sudo chmod 400 candidate.pem
           chmod 777 /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh
-          su -
+          sudo -i
           echo 'Infrastructure Completely deployed'
 
         env:
