@@ -88,11 +88,12 @@ jobs:
 
       - run: |
           sudo pwd
-          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set aws_access_key_id 123
+          aws configure set aws_secret_access_key 456
           aws configure set default.region us-east-1
           sudo echo 'output = json' >> $HOME/.aws/config
           sudo cat $HOME/.aws/config
+          sudo cat $HOME/.aws/credentials
           export AWS_PAGER=""
           sudo aws sts get-caller-identity
           sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
