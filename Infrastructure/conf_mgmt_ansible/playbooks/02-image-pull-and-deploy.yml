@@ -16,10 +16,9 @@
     
     - name: Install AWS CLI v2
       shell: |
-        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-        apt install unzip -y
-        unzip awscliv2.zip
-        ./aws/install --update
+        cd /root
+        apt update -y; apt install unzip curl -y;curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip";unzip awscliv2.zip;./aws/install --update
+
 
         
     # - name: Terraform apply

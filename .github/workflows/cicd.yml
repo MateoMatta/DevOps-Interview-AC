@@ -95,7 +95,7 @@ jobs:
           aws configure set default.region us-east-1
           echo 'output = json' >> $HOME/.aws/config
           export AWS_PAGER=""
-          aws sts get-caller-identity              
+          aws sts get-caller-identity
           sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
           sudo sed 's/REPLACE/\n/g' temporalFile.pem > candidate.pem
           sudo chmod 400 candidate.pem
