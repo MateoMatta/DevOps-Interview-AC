@@ -91,14 +91,14 @@ jobs:
           aws configure set default.region us-east-1
           export AWS_PAGER=""
           sudo echo 'output = json' >> ~/.aws/config
-          cat ~/.aws/config
+          # cat ~/.aws/config
           echo 'Authenticating...'
-          aws sts get-caller-identity
+          aws sts get-caller-identity  > /dev/null 2>&1
           echo 'Deploying containers...'
           chmod 777 /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh
           # aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names demo-asg-instance-1 --region ${{ vars.AWS_REGION }} --query AutoScalingGroups[].Instances[].InstanceId --output text
           # ls -la $PWD
-          echo 'Aqui'
+          # echo 'Aqui'
           /usr/bin/bash /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh demo-asg-instance-1 ${{ vars.AWS_REGION }}
           echo 'Infrastructure Completely deployed'
 
