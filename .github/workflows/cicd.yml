@@ -91,7 +91,7 @@ jobs:
           # sudo sed 's/REPLACE/\n/g' temporalFile.pem > /home/runner/candidate.pem
           # sudo chmod 400 /home/runner/candidate.pem
           # aws --version
-          # sudo ls -l ~/.aws/
+          # sudo ls -l ~/.aws
           # aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           # aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           # aws configure set default.region us-east-1
@@ -102,7 +102,7 @@ jobs:
           # aws sts get-caller-identity
           echo 'Deploying containers...'
           chmod 777 /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh
-          ls -la /
+          ls -la ~/.aws
           #sudo /usr/bin/bash /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh demo-asg-instance-1 ${{ vars.AWS_REGION }}
           echo 'Infrastructure Completely deployed'
 
