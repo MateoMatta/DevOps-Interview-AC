@@ -62,14 +62,6 @@ jobs:
           sudo apt update -y
           sudo apt install ansible -y
           sudo apt install tree wget -y
-          sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
-          sudo sed 's/REPLACE/\n/g' temporalFile.pem > candidate.pem
-          sudo chmod 400 candidate.pem
-          echo 'Otro echo'
-          sudo cat candidate.pem
-          echo 'Shown key'
-          sudo ssh -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/yourFile.txt'
-          sudo ssh -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/text.txt; echo ${{ secrets.AWS_ACCOUNT_ID }} > $HOME/text.txt'
           sudo tree /home/runner/DevOps-Interview-AC/          
           ansible-playbook /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
           AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 729158664723.dkr.ecr.us-east-1.amazonaws.com
