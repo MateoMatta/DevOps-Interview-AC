@@ -2,9 +2,15 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.65.0"
+      version = "~> 5.14.0"
     }
   }
+
+  backend "s3" {
+    bucket = "demo_bucket_for_terraform"
+    region = "east-us-1"
+  }
+
 }
 
 provider "aws" {
@@ -160,6 +166,32 @@ resource "aws_elb" "demo-elb" {
     instance_protocol = "http"
     lb_port           = 80
     lb_protocol       = "http"
+  }
+
+  resource "aws_s3_bucket" "s3Bucket" {
+    bucket = "demo_bucket_for_terraform"
+    acl    = "public-read"
+
+    policy = <<EOF
+{
+     "id" : "MakePublic",
+   "version" : "2012-10-17",
+   "statement" : [
+      {
+         "action" : [
+             "s3:GetObject"
+          ],
+         "effect" : "Allow",
+         "resource" : "arn:aws:s3:::demo_bucket_for_terraform/*",
+         "principal" : "*"
+      }
+    ]
+  }
+EOF
+
+    website {
+      index_document = "index.html"
+    }
   }
 
   #     #   #   listener {

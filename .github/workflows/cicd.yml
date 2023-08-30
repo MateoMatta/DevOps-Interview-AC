@@ -7,105 +7,142 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 jobs:
-  build-and-push:
-    runs-on: ubuntu-20.04
+  # build-and-push:
+  #   runs-on: ubuntu-20.04
 
-    steps:
-      - name: Clone test-app repo
-        uses: actions/checkout@v3 
+  #   steps:
+  #     - name: Clone test-app repo
+  #       uses: actions/checkout@v3 
 
-      - run: |
-          sudo apt update -y
-          sudo mkdir /home/runner/app_content
-          sudo chmod 755 /home/runner/app_content
-          echo ''
-          sudo cp ./Dockerfile /home/runner/app_content/Dockerfile
-          sudo ls /home/runner/app_content/
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     - run: |
+  #         sudo apt update -y
+  #         sudo mkdir /home/runner/app_content
+  #         sudo chmod 755 /home/runner/app_content
+  #         echo ''
+  #         sudo cp ./Dockerfile /home/runner/app_content/Dockerfile
+  #         sudo ls /home/runner/app_content/
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: vitr/actions-build-and-upload-to-ecs@master      
-        with:
-          access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          account_id: ${{ secrets.AWS_ACCOUNT_ID }}
-          repo: main-applications-registry
-          region: us-east-1
-          tags: latest,${{ github.sha }}
-          create_repo: true
-      - run: |
-          ls /home/runner/
-          echo 'Hey'
-          sudo docker images
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     - uses: vitr/actions-build-and-upload-to-ecs@master      
+  #       with:
+  #         access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+  #         repo: main-applications-registry
+  #         region: us-east-1
+  #         tags: latest,${{ github.sha }}
+  #         create_repo: true
+  #     - run: |
+  #         ls /home/runner/
+  #         echo 'Hey'
+  #         sudo docker images
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  pull-and-run-test-for-image:
-    needs: build-and-push
-    runs-on: ubuntu-20.04  
-    steps:
-      - name: Clone test-app repo
-        uses: actions/checkout@v3   
+  # pull-and-run-test-for-image:
+  #   needs: build-and-push
+  #   runs-on: ubuntu-20.04  
+  #   steps:
+  #     - name: Clone test-app repo
+  #       uses: actions/checkout@v3   
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+  #     - name: Configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: us-east-1
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+  #     - name: Login to Amazon ECR
+  #       id: login-ecr
+  #       uses: aws-actions/amazon-ecr-login@v1
         
-      - run: |
-          sudo apt update -y
-          sudo apt install ansible -y
-          sudo apt install tree wget -y
-          sudo tree /home/runner/DevOps-Interview-AC/          
-          ansible-playbook /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
-          AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 729158664723.dkr.ecr.us-east-1.amazonaws.com
-          sudo docker run -d -p 80:80 --name main-applications-registry 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry
-          sudo docker ps
-          wget localhost:80
-          sudo cat index.html
-          echo 'Done. Deployed'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     - run: |
+  #         sudo apt update -y
+  #         sudo apt install ansible -y
+  #         sudo apt install tree wget -y
+  #         sudo tree /home/runner/DevOps-Interview-AC/          
+  #         ansible-playbook /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
+  #         AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 729158664723.dkr.ecr.us-east-1.amazonaws.com
+  #         sudo docker run -d -p 80:80 --name main-applications-registry 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry
+  #         sudo docker ps
+  #         wget localhost:80
+  #         sudo cat index.html
+  #         echo 'Done. Deployed'
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  deploy:
-    needs: pull-and-run-test-for-image
-    runs-on: ubuntu-20.04  
+
+  tf_fmt:
+    name: Deploy Site
+    # needs: pull-and-run-test-for-image
+    runs-on: ubuntu-20.04
     steps:
 
-      - name: Clone test-app repo
-        uses: actions/checkout@v3   
+    - name: Checkout Repo
+      uses: actions/checkout@v3
 
-      - run: |
-          sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
-          sudo sed 's/REPLACE/\n/g' temporalFile.pem > /home/runner/candidate.pem
-          sudo chmod 400 /home/runner/candidate.pem
-          aws --version
-          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws configure set default.region us-east-1
-          export AWS_PAGER=""
-          sudo echo 'output = json' >> ~/.aws/config
-          # cat ~/.aws/config
-          echo 'Authenticating...'
-          aws sts get-caller-identity  > /dev/null 2>&1
-          echo 'Deploying containers...'
-          chmod 777 /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh
-          # aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names demo-asg-instance-1 --region ${{ vars.AWS_REGION }} --query AutoScalingGroups[].Instances[].InstanceId --output text
-          # ls -la $PWD
-          # echo 'Aqui'
-          /usr/bin/bash /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh demo-asg-instance-1 ${{ vars.AWS_REGION }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          echo 'Infrastructure Completely deployed'
+    - name: Terraform Init
+      uses: hashicorp/terraform-github-actions/init@v0.4.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TF_ACTION_WORKING_DIR: '/home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform'
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    - name: Terraform Validate
+      uses: hashicorp/terraform-github-actions/validate@v0.3.7
+
+    - name: Terraform Apply
+      uses: hashicorp/terraform-github-actions/apply@v0.4.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TF_ACTION_WORKING_DIR: '/home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform'
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    - name: Sync S3
+      uses: jakejarvis/s3-sync-action@master
+      env:
+        AWS_REGION: 'us-east-1'
+        AWS_S3_BUCKET: 'demo_bucket_for_terraform'
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  # deploy:
+  #   needs: pull-and-run-test-for-image
+  #   runs-on: ubuntu-20.04  
+  #   steps:
+
+  #     - name: Clone test-app repo
+  #       uses: actions/checkout@v3   
+
+  #     - run: |
+  #         sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
+  #         sudo sed 's/REPLACE/\n/g' temporalFile.pem > /home/runner/candidate.pem
+  #         sudo chmod 400 /home/runner/candidate.pem
+  #         aws --version
+  #         aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws configure set default.region us-east-1
+  #         export AWS_PAGER=""
+  #         sudo echo 'output = json' >> ~/.aws/config
+  #         # cat ~/.aws/config
+  #         echo 'Authenticating...'
+  #         aws sts get-caller-identity  > /dev/null 2>&1
+  #         echo 'Deploying containers...'
+  #         chmod 777 /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh
+  #         # aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names demo-asg-instance-1 --region ${{ vars.AWS_REGION }} --query AutoScalingGroups[].Instances[].InstanceId --output text
+  #         # ls -la $PWD
+  #         # echo 'Aqui'
+  #         /usr/bin/bash /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh demo-asg-instance-1 ${{ vars.AWS_REGION }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         echo 'Infrastructure Completely deployed'
+
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
           
           
@@ -188,7 +225,8 @@ jobs:
   # terraform -chdir=./Infrastructure/conf_terraform destroy -auto-approve
   # terraform apply -auto-approve
 
-
+  # git add .; git commit -m "Automatize terraform deploy with containers"; git push origin main
+  # terraform -chdir=./Infrastructure/conf_terraform apply -auto-approve
       
 
 
