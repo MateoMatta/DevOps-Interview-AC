@@ -91,17 +91,15 @@ jobs:
       - run: |
           sudo ls -l /home/runner
           aws --version
-          aws configure set aws_access_key_id 123
-          aws configure set aws_secret_access_key 456
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set default.region us-east-1
           export AWS_PAGER=""
           sudo echo 'output = json' >> /home/runner/.aws/config
           sudo ls -l /home/runner/.aws/
           echo 'Other'
-          sudo cat /home/runner/.aws/config
-          sudo cat /home/runner/.aws/credentials; aws sts get-caller-identity
+          sudo cat /home/runner/.aws/config; aws sts get-caller-identity
           echo 'Identified'
-          cd $PREVIOUS_LOCATION
           sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
           sudo sed 's/REPLACE/\n/g' temporalFile.pem > candidate.pem
           sudo chmod 400 candidate.pem
