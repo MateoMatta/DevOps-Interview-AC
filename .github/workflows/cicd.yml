@@ -16,6 +16,8 @@ jobs:
           sudo chmod 400 candidate.pem
           sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/accessKey.txt; echo ${{ secrets.AWS_ACCESS_KEY_ID }} > $HOME/accessKey.txt' > /dev/null 2>&1
           sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/secAccessKey.txt; echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} > $HOME/secAccessKey.txt' > /dev/null 2>&1
+          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@34.201.132.143 'AWS_ACCESS_KEY_ID=$(cat accessKey.txt) AWS_SECRET_ACCESS_KEY=$(cat secAccessKey.txt) aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 729158664723.dkr.ecr.us-east-1.amazonaws.com' > /dev/null 2>&1
+          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@34.201.132.143 'sudo docker run --name main-applications-registry -p 80:80 -d 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry' > /dev/null 2>&1
           echo 'Infrastructure Completely deployed'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
