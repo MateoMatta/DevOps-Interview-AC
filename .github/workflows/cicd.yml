@@ -77,21 +77,32 @@ jobs:
     needs: pull-and-deploy-test-of-image
     runs-on: ubuntu-20.04  
     steps:
+
+      - name: Clone test-app repo
+        uses: actions/checkout@v3   
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
       - run: |
           sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
           sudo sed 's/REPLACE/\n/g' temporalFile.pem > candidate.pem
           sudo chmod 400 candidate.pem
-          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@44.203.143.235 'touch $HOME/accessKey.txt; echo ${{ secrets.AWS_ACCESS_KEY_ID }} > $HOME/accessKey.txt' > /dev/null 2>&1
-          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@44.203.143.235 'touch $HOME/secAccessKey.txt; echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} > $HOME/secAccessKey.txt' > /dev/null 2>&1
-          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@44.203.143.235 'AWS_ACCESS_KEY_ID=$(cat accessKey.txt) AWS_SECRET_ACCESS_KEY=$(cat secAccessKey.txt) aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 729158664723.dkr.ecr.us-east-1.amazonaws.com' > /dev/null 2>&1
-          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@44.203.143.235 'sudo docker run --name main-applications-registry -p 80:80 -d 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry' > /dev/null 2>&1
+          sudo sh /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh demo-asg-instance-1 ${{ vars.AWS_REGION }}
           echo 'Infrastructure Completely deployed'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-
           
-  
+          
+          
+          # sh ips.sh demo-asg-instance-1 | jq '.[]' > uno.json
+          # jq '.[] | .public_ip' uno.json > dos.json
+          # sed -i 's\"\\g' dos.json
   # deploy-infrastructure-with-terraform:
   #   needs: pull-and-deploy-test-of-image
   #   runs-on: ubuntu-20.04

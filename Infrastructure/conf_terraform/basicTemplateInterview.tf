@@ -128,7 +128,8 @@ resource "aws_security_group" "demo-sg-01" {
 resource "aws_autoscaling_group" "demo_autoscaling" {
   name                 = "demo-asg-instance-1"
   min_size             = "1"
-  max_size             = "1"
+  max_size             = "2"
+  desired_capacity     = "2"
   vpc_zone_identifier  = [aws_subnet.demo-sub-01.id]
   launch_configuration = aws_launch_configuration.demo_configuration.name
   load_balancers       = [aws_elb.demo-elb.name]
