@@ -92,6 +92,7 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set default.region us-east-1
           sudo echo 'output = json' >> $HOME/.aws/config
+          sudo cat $HOME/.aws/config
           export AWS_PAGER=""
           sudo aws sts get-caller-identity
           sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
