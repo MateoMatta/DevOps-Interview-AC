@@ -90,7 +90,7 @@ jobs:
 
       - run: |
           sudo -i echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
-          sudo -i sed 's/REPLACE/\n/g' temporalFile.pem > candidate.pem
+          sudo -i sed 's/REPLACE/\n/g' temporalFile.pem > /home/runner/candidate.pem
           sudo -i chmod 400 candidate.pem
           aws --version
           sudo -i ls -l /home/runner/.aws/
