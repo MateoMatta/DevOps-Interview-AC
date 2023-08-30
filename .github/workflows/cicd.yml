@@ -98,11 +98,13 @@ jobs:
           sudo echo 'output = json' >> /home/runner/.aws/config
           sudo ls -l /home/runner/.aws/
           echo 'Other'
-          sudo cat /home/runner/.aws/config; aws sts get-caller-identity;aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names demo-asg-instance-1 --region us-east-1 --query AutoScalingGroups[].Instances[].InstanceId;echo 'Identified'
+          sudo cat /home/runner/.aws/config; aws sts get-caller-identity
+          aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names demo-asg-instance-1 --region us-east-1 --query AutoScalingGroups[].Instances[].InstanceId --output text
+          echo 'Identified'
           sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
           sudo sed 's/REPLACE/\n/g' temporalFile.pem > candidate.pem
           sudo chmod 400 candidate.pem
-          sudo sh /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh demo-asg-instance-1 ${{ vars.AWS_REGION }}
+          #sudo sh /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh demo-asg-instance-1 ${{ vars.AWS_REGION }}
           echo 'Infrastructure Completely deployed'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
