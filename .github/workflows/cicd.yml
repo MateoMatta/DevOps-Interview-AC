@@ -89,8 +89,8 @@ jobs:
           aws-region: us-east-1
 
       - run: |  
-          apt update -y
-          apt install curl unzip -y
+          sudo apt update -y
+          sudo apt install curl unzip -y
           sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
           sudo apt install unzip -y
           sudo unzip awscliv2.zip
