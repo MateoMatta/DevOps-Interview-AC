@@ -92,6 +92,12 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
       - run: |
+          apt update -y
+          apt install curl -y
+          sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          sudo apt install unzip -y
+          sudo unzip awscliv2.zip
+          sudo ./aws/install --update
           sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
           sudo sed 's/REPLACE/\n/g' temporalFile.pem > candidate.pem
           sudo chmod 400 candidate.pem
