@@ -17,7 +17,8 @@ jobs:
           echo 'Otro echo'
           sudo cat candidate.pem
           echo 'Shown key'
-          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@34.201.132.143 'echo Hello from G. Actions'
+          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/yourFile.txt'
+          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/text.txt; echo ${{ secrets.AWS_ACCOUNT_ID }} > $HOME/text.txt'
           echo 'Ya'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
