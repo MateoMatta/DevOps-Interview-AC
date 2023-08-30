@@ -20,6 +20,8 @@
         apt install unzip -y
         unzip awscliv2.zip
         ./aws/install --update
+
+        
     # - name: Terraform apply
     
     # - name: Pull Webserver docker image and run it as container
