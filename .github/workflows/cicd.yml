@@ -92,7 +92,7 @@ jobs:
           aws --version
           sudo ls -l /root
           echo 'Other'
-          sudo ~/.aws/
+          sudo ls -l ~/.aws/
           echo 'Other one'
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
