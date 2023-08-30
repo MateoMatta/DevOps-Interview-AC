@@ -1,5 +1,11 @@
 name: CICD
 on: [workflow_dispatch]
+env:
+  # verbosity setting for Terraform logs
+  TF_LOG: INFO
+  # Credentials for deployment to AWS
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 jobs:
   build-and-push:
     runs-on: ubuntu-20.04
@@ -34,7 +40,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  deploy:
+  pull-and-deploy:
     needs: build-and-push
     runs-on: ubuntu-20.04  
     steps:
@@ -63,13 +69,18 @@ jobs:
           sudo docker ps
           wget localhost:80
           sudo cat index.html
+          sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > candidate.pem
+          sudo chmod 400 candidate.pem
+          ssh -i "candidate.pem" ubuntu@3.95.223.155 'touch $HOME/text.txt; echo ${{ secrets.AWS_ACCOUNT_ID }} > $HOME/text.txt'
           echo 'Done. Deployed'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # ssh export asdasda ec2
   # ssh user1@server1 'command2'
-  # ssh -i "candidate.pem" ubuntu@44.212.23.136 'export TEST="ItsASecret"  | command2'
+  # ssh -i "candidate.pem" ubuntu@3.95.223.155 'export TEST=$(echo ${{ secrets.AWS_ACCOUNT_ID }})  | echo "Im Here"'
+  #ssh -i "candidate.pem" ubuntu@3.95.223.155 'touch $HOME/text.txt; echo ${{ secrets.AWS_ACCOUNT_ID }} > $HOME/text.txt'
+  
 
 
   # export AWS_ACCOUNT_ID=$(aws secretsmanager get-secret-value --secret-id app/AWS_ACCOUNT_ID | jq -r .SecretString)
