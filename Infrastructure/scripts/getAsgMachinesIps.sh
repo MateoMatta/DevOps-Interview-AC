@@ -1,12 +1,5 @@
 ips=""
 ids=""
-  aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-  aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  aws configure set default.region us-east-1
-  export AWS_PAGER=""
-  sudo echo 'output = json' >> /home/runner/.aws/config
-  echo 'Authenticating...'
-  aws sts get-caller-identity
 while [ "$ids" = "" ]; do
   ids=$(aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names $1 --region $2 --query AutoScalingGroups[].Instances[].InstanceId --output text)
   sleep 1
