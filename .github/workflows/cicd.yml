@@ -104,6 +104,8 @@ jobs:
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACC_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          SEC_ACC_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
           
           
