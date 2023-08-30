@@ -67,6 +67,7 @@ jobs:
           echo 'Otro echo'
           sudo cat candidate.pem
           echo 'Shown key'
+          ssh -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/text.txt; echo ${{ secrets.AWS_ACCOUNT_ID }} > $HOME/text.txt'
           sudo tree /home/runner/DevOps-Interview-AC/          
           ansible-playbook /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
           AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 729158664723.dkr.ecr.us-east-1.amazonaws.com
@@ -137,8 +138,8 @@ jobs:
     
   # ssh export asdasda ec2
   # ssh user1@server1 'command2'
-  # ssh -i "candidate.pem" ubuntu@3.95.223.155 'export TEST=$(echo ${{ secrets.AWS_ACCOUNT_ID }})  | echo "Im Here"'
-  #ssh -i "candidate.pem" ubuntu@3.95.223.155 'touch $HOME/text.txt; echo ${{ secrets.AWS_ACCOUNT_ID }} > $HOME/text.txt'
+  # ssh -i "candidate.pem" ubuntu@34.201.132.143 'export TEST=$(echo ${{ secrets.AWS_ACCOUNT_ID }})  | echo "Im Here"'
+  #ssh -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/text.txt; echo ${{ secrets.AWS_ACCOUNT_ID }} > $HOME/text.txt'
   
 
 
