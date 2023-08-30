@@ -69,9 +69,6 @@ jobs:
           sudo docker ps
           wget localhost:80
           sudo cat index.html
-          sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > candidate.pem
-          sudo chmod 400 candidate.pem
-          ssh -i "candidate.pem" ubuntu@3.95.223.155 'touch $HOME/text.txt; echo ${{ secrets.AWS_ACCOUNT_ID }} > $HOME/text.txt'
           echo 'Done. Deployed'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
