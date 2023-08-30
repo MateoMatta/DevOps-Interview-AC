@@ -81,12 +81,15 @@ jobs:
       - name: Clone test-app repo
         uses: actions/checkout@v3   
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
         with:
+          aws-region: us-east-1
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+      - name: get caller identity2
+        run: |
+          aws sts get-caller-identity
 
       - run: |  
           sudo apt update -y
@@ -96,9 +99,6 @@ jobs:
           sudo unzip awscliv2.zip
           sudo ./aws/install --update
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
       - run: |
           sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
           sudo sed 's/REPLACE/\n/g' temporalFile.pem > candidate.pem
