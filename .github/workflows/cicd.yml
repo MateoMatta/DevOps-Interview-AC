@@ -40,7 +40,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  pull-and-deploy:
+  pull-and-deploy-test-of-image:
     needs: build-and-push
     runs-on: ubuntu-20.04  
     steps:
@@ -62,6 +62,11 @@ jobs:
           sudo apt update -y
           sudo apt install ansible -y
           sudo apt install tree wget -y
+          echo ${{ secrets.PEM_CANDIDATE_KEY }}
+          sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > llave.pem
+          sudo chmod 400 llave.pem 
+          echo 'Otro echo'
+          sudo cat llave.pem
           sudo tree /home/runner/DevOps-Interview-AC/          
           ansible-playbook /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
           AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 729158664723.dkr.ecr.us-east-1.amazonaws.com
@@ -72,7 +77,61 @@ jobs:
           echo 'Done. Deployed'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+  # deploy-infrastructure-with-terraform:
+  #   needs: pull-and-deploy-test-of-image
+  #   runs-on: ubuntu-20.04
+  #   name: Deploy Webserver
+  #   steps:
 
+  #   - name: Checkout Repo
+  #     uses: actions/checkout@v3
+
+  #   - name: Terraform Init
+  #     uses: hashicorp/terraform-github-actions/init@v0.4.0
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       TF_ACTION_WORKING_DIR: '/home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform/.'
+  #       AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  #   - name: Terraform Validate
+  #     uses: hashicorp/terraform-github-actions/validate@v0.3.7
+
+  #   - name: Terraform Apply
+  #     uses: hashicorp/terraform-github-actions/apply@v0.4.0
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       TF_ACTION_WORKING_DIR: '/home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform/.'
+  #       AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  #   - name: Sync S3
+  #     uses: jakejarvis/s3-sync-action@master
+  #     env:
+  #       SOURCE_DIR: './src'
+  #       AWS_REGION: 'us-east-1'
+  #       AWS_S3_BUCKET: '[BUCKET_NAME_HERE]'
+  #       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+
+      # - uses: hashicorp/setup-terraform@v2
+      #   with:
+      #     cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      #     terraform_wrapper: true
+      
+          
+          
+          # - run: terraform init
+    
+          # - id: plan
+          #   run: terraform plan -no-color
+    
+          # - run: echo ${{ steps.plan.outputs.stdout }}
+          # - run: echo ${{ steps.plan.outputs.stderr }}
+          # - run: echo ${{ steps.plan.outputs.exitcode }}
+    
   # ssh export asdasda ec2
   # ssh user1@server1 'command2'
   # ssh -i "candidate.pem" ubuntu@3.95.223.155 'export TEST=$(echo ${{ secrets.AWS_ACCOUNT_ID }})  | echo "Im Here"'
@@ -89,7 +148,9 @@ jobs:
   
   # sudo docker run -d -p 80:80 --name main-applications-registry ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry
   # curl localhost:80
-        
+  
+  # terraform -chdir=./Infrastructure/conf_terraform plan
+  # terraform apply -auto-approve
 
 
       

@@ -146,7 +146,7 @@ resource "aws_launch_configuration" "demo_configuration" {
   security_groups             = [aws_security_group.demo-sg-01.id]
   associate_public_ip_address = true
   key_name                    = "candidate"
-  user_data                   = file("./Infrastructure/scripts/ansibleLaunchConfiguration.sh")
+  user_data                   = file("../scripts/ansibleLaunchConfiguration.sh")
   #export keys
 }
 
