@@ -81,12 +81,6 @@ jobs:
       - name: Clone test-app repo
         uses: actions/checkout@v3   
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          aws-region: us-east-1
-          role-to-assume: arn:aws:iam::729158664723:root
-
       - run: |  
           sudo apt update -y
           sudo apt install curl unzip -y
@@ -96,6 +90,12 @@ jobs:
           sudo ./aws/install --update
 
       - run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region us-east-1
+          echo 'output = json' >> $HOME/.aws/config
+          export AWS_PAGER=""
+          aws sts get-caller-identity              
           sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
           sudo sed 's/REPLACE/\n/g' temporalFile.pem > candidate.pem
           sudo chmod 400 candidate.pem
