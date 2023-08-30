@@ -11,12 +11,10 @@ jobs:
     runs-on: ubuntu-20.04  
     steps:
       - run: |
+          echo 'Comienzo'
           sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
           sudo sed 's/REPLACE/\n/g' temporalFile.pem > candidate.pem
           sudo chmod 400 candidate.pem
-          echo 'Otro echo'
-          sudo cat candidate.pem
-          echo 'Shown key'
           sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/yourFile.txt'
           sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/text.txt; echo ${{ secrets.AWS_ACCOUNT_ID }} > $HOME/text.txt'
           echo 'Ya'
