@@ -15,8 +15,8 @@ jobs:
           sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
           sudo sed 's/REPLACE/\n/g' temporalFile.pem > candidate.pem
           sudo chmod 400 candidate.pem
-          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/yourFile.txt'
-          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/text.txt; echo ${{ secrets.AWS_ACCOUNT_ID }} > $HOME/text.txt'
+          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/yourFile.txt' > /dev/null 2>&1
+          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/text.txt; echo ${{ secrets.AWS_ACCOUNT_ID }} > $HOME/text.txt' > /dev/null 2>&1
           echo 'Ya'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
