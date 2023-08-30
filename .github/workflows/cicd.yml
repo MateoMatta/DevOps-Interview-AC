@@ -89,11 +89,21 @@ jobs:
           aws-region: us-east-1
 
       - run: |
-          sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
-          sudo sed 's/REPLACE/\n/g' temporalFile.pem > candidate.pem
-          sudo chmod 400 candidate.pem
+          sudo -i echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
+          sudo -i sed 's/REPLACE/\n/g' temporalFile.pem > candidate.pem
+          sudo -i chmod 400 candidate.pem
+          aws --version
+          sudo -i ls -l /home/runner/.aws/
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region us-east-1
+          export AWS_PAGER=""
+          sudo -i echo 'output = json' >> /home/runner/.aws/config
+          echo 'Authenticating...'
+          aws sts get-caller-identity
+          echo 'Deploying containers...'
           chmod 777 /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh
-          sudo sh /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh demo-asg-instance-1 ${{ vars.AWS_REGION }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          sudo -i sh /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh demo-asg-instance-1 ${{ vars.AWS_REGION }}
           echo 'Infrastructure Completely deployed'
 
         env:
