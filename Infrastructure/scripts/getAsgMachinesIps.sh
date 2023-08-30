@@ -1,3 +1,17 @@
+aws --version
+aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+aws configure set default.region us-east-1
+export AWS_PAGER=""
+#sudo echo 'output = json' >> /home/runner/.aws/config
+echo 'Authenticating...'
+aws sts get-caller-identity
+echo 'Deploying containers...'
+sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
+sudo sed 's/REPLACE/\n/g' temporalFile.pem > candidate.pem
+sudo chmod 400 candidate.pem
+sleep 10
+
 ips=""
 ids=""
 while [ "$ids" = "" ]; do
