@@ -96,11 +96,10 @@ jobs:
           aws sts get-caller-identity
           echo 'Deploying containers...'
           chmod 777 /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh
-          aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names demo-asg-instance-1 --region ${{ vars.AWS_REGION }} --query AutoScalingGroups[].Instances[].InstanceId --output text
+          # aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names demo-asg-instance-1 --region ${{ vars.AWS_REGION }} --query AutoScalingGroups[].Instances[].InstanceId --output text
           # ls -la $PWD
           echo 'Aqui'
-
-          #sudo /usr/bin/bash /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh demo-asg-instance-1 ${{ vars.AWS_REGION }}
+          /usr/bin/bash /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh demo-asg-instance-1 ${{ vars.AWS_REGION }}
           echo 'Infrastructure Completely deployed'
 
         env:
