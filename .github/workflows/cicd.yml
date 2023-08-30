@@ -91,14 +91,15 @@ jobs:
       - run: |
           sudo ls -l /home/runner
           aws --version
-          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set aws_access_key_id 123
+          aws configure set aws_secret_access_key 456
           aws configure set default.region us-east-1
+          export AWS_PAGER=""
           sudo echo 'output = json' >> /home/runner/.aws/config
           sudo ls -l /home/runner/.aws/
           echo 'Other'
           sudo cat /home/runner/.aws/config
-          export AWS_PAGER=""
+          sudo cat /home/runner/.aws/credentials
           sudo aws sts get-caller-identity
           echo 'Identified'
           cd $PREVIOUS_LOCATION
