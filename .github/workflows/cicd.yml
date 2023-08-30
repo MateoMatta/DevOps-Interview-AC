@@ -101,9 +101,10 @@ jobs:
           sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
           sudo sed 's/REPLACE/\n/g' temporalFile.pem > candidate.pem
           sudo chmod 400 candidate.pem
+          sleep 10
           sudo sh /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh demo-asg-instance-1 ${{ vars.AWS_REGION }}
           echo 'Infrastructure Completely deployed'
-          
+
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
