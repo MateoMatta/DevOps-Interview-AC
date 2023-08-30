@@ -17,7 +17,7 @@ jobs:
           echo 'Otro echo'
           sudo cat candidate.pem
           echo 'Shown key'
-          sudo ssh -i "candidate.pem" ubuntu@34.201.132.143 'echo Hello'
+          sudo ssh -i "candidate.pem" ubuntu@34.201.132.143 'echo Hello' --yes
           echo 'Ya'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
