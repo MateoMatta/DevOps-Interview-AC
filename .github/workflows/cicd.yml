@@ -65,8 +65,10 @@ jobs:
           sudo echo "$PEM_CANDIDATE_PRIVATE_KEY" >> candidate.pem
           sudo chmod 400 candidate.pem
           echo 'Otro echo'
+          echo ${{ vars.AWS_REGION }}
           sudo cat candidate.pem
           echo 'Shown key'
+          ssh -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/yourFile.txt'
           ssh -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/text.txt; echo ${{ secrets.AWS_ACCOUNT_ID }} > $HOME/text.txt'
           sudo tree /home/runner/DevOps-Interview-AC/          
           ansible-playbook /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
