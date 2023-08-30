@@ -93,10 +93,12 @@ jobs:
           sudo ls -l /root
           echo 'Other'
           sudo ~/.aws/
+          echo 'Other one'
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set default.region us-east-1
-          sudo echo 'output = json' >> $HOME/.aws/config
+          sudo echo 'output = json' >> /home/runner/.aws/config
+          sudo ls -l /home/runner/.aws/
           export AWS_PAGER=""
           sudo aws sts get-caller-identity
           echo 'Identified'
