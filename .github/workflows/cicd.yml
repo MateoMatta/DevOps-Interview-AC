@@ -65,8 +65,6 @@ jobs:
           sudo echo "$PEM_CANDIDATE_PRIVATE_KEY" >> candidate.pem
           sudo chmod 400 candidate.pem
           echo 'Otro echo'
-          echo ${{ vars.AWS_REGION }}
-          sudo cat candidate.pem
           echo 'Shown key'
           ssh -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/yourFile.txt'
           ssh -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/text.txt; echo ${{ secrets.AWS_ACCOUNT_ID }} > $HOME/text.txt'
@@ -80,7 +78,7 @@ jobs:
           echo 'Done. Deployed'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PEM_CANDIDATE_PRIVATE_KEY: ${{ secrets.PEM_CANDIDATE_KEY }}
+          PEM_CANDIDATE_PRIVATE_KEY: ${{ vars.PEM_CANDIDATE_KEY }}
 
           
   
