@@ -74,16 +74,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   test:
+    needs: pull-and-deploy-test-of-image
     runs-on: ubuntu-20.04  
     steps:
       - run: |
           sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
           sudo sed 's/REPLACE/\n/g' temporalFile.pem > candidate.pem
           sudo chmod 400 candidate.pem
-          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/accessKey.txt; echo ${{ secrets.AWS_ACCESS_KEY_ID }} > $HOME/accessKey.txt' > /dev/null 2>&1
-          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/secAccessKey.txt; echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} > $HOME/secAccessKey.txt' > /dev/null 2>&1
-          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@34.201.132.143 'AWS_ACCESS_KEY_ID=$(cat accessKey.txt) AWS_SECRET_ACCESS_KEY=$(cat secAccessKey.txt) aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 729158664723.dkr.ecr.us-east-1.amazonaws.com' > /dev/null 2>&1
-          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@34.201.132.143 'sudo docker run --name main-applications-registry -p 80:80 -d 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry' > /dev/null 2>&1
+          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@44.203.143.235 'touch $HOME/accessKey.txt; echo ${{ secrets.AWS_ACCESS_KEY_ID }} > $HOME/accessKey.txt' > /dev/null 2>&1
+          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@44.203.143.235 'touch $HOME/secAccessKey.txt; echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} > $HOME/secAccessKey.txt' > /dev/null 2>&1
+          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@44.203.143.235 'AWS_ACCESS_KEY_ID=$(cat accessKey.txt) AWS_SECRET_ACCESS_KEY=$(cat secAccessKey.txt) aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 729158664723.dkr.ecr.us-east-1.amazonaws.com' > /dev/null 2>&1
+          sudo ssh -oStrictHostKeyChecking=no -i "candidate.pem" ubuntu@44.203.143.235 'sudo docker run --name main-applications-registry -p 80:80 -d 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry' > /dev/null 2>&1
           echo 'Infrastructure Completely deployed'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -147,8 +148,8 @@ jobs:
     
   # ssh export asdasda ec2
   # ssh user1@server1 'command2'
-  # ssh -i "candidate.pem" ubuntu@34.201.132.143 'export TEST=$(echo ${{ secrets.AWS_ACCOUNT_ID }})  | echo "Im Here"'
-  #ssh -i "candidate.pem" ubuntu@34.201.132.143 'touch $HOME/text.txt; echo ${{ secrets.AWS_ACCOUNT_ID }} > $HOME/text.txt'
+  # ssh -i "candidate.pem" ubuntu@44.203.143.235 'export TEST=$(echo ${{ secrets.AWS_ACCOUNT_ID }})  | echo "Im Here"'
+  #ssh -i "candidate.pem" ubuntu@44.203.143.235 'touch $HOME/text.txt; echo ${{ secrets.AWS_ACCOUNT_ID }} > $HOME/text.txt'
   
 
 
@@ -163,6 +164,7 @@ jobs:
   # curl localhost:80
   
   # terraform -chdir=./Infrastructure/conf_terraform plan
+  # terraform -chdir=./Infrastructure/conf_terraform destroy -auto-approve
   # terraform apply -auto-approve
 
 
