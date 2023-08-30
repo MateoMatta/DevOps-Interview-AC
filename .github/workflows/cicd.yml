@@ -91,7 +91,7 @@ jobs:
       - run: |
           sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
           sudo sed 's/REPLACE/\n/g' temporalFile.pem > /home/runner/candidate.pem
-          sudo chmod 400 candidate.pem
+          sudo chmod 400 /home/runner/candidate.pem
           aws --version
           sudo ls -l /home/runner/.aws/
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
