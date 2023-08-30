@@ -82,16 +82,18 @@ jobs:
         uses: actions/checkout@v3   
 
       - run: |  
-          cd $HOME
-          apt update -y; apt install unzip curl -y;curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip";unzip awscliv2.zip;./aws/install --update
+          sudo pwd
+          sudo cd $HOME
+          sudo apt update -y;sudo apt install unzip curl -y;sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip";sudo unzip awscliv2.zip;sudo ./aws/install --update
 
       - run: |
+          sudo pwd
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set default.region us-east-1
-          echo 'output = json' >> $HOME/.aws/config
+          sudo echo 'output = json' >> $HOME/.aws/config
           export AWS_PAGER=""
-          aws sts get-caller-identity
+          sudo aws sts get-caller-identity
           sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
           sudo sed 's/REPLACE/\n/g' temporalFile.pem > candidate.pem
           sudo chmod 400 candidate.pem
