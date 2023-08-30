@@ -62,10 +62,11 @@ jobs:
           sudo apt update -y
           sudo apt install ansible -y
           sudo apt install tree wget -y
-          sudo echo $(cat ${{ secrets.PEM_CANDIDATE_KEY }} --show-ends) > temporalText.txt; sudo sed 's/$ /\n/g' temporalText.txt > candidate.pem
-          cat candidate.pem
+          sudo echo "$PEM_CANDIDATE_PRIVATE_KEY" >> candidate.pem
           sudo chmod 400 candidate.pem
           echo 'Otro echo'
+          sudo cat candidate.pem
+          echo 'Shown key'
           sudo tree /home/runner/DevOps-Interview-AC/          
           ansible-playbook /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_mgmt_ansible/playbooks/02-image-pull-and-deploy.yml
           AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 729158664723.dkr.ecr.us-east-1.amazonaws.com
@@ -76,6 +77,9 @@ jobs:
           echo 'Done. Deployed'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PEM_CANDIDATE_PRIVATE_KEY: ${{ secrets.PEM_CANDIDATE_KEY }}
+
+          
   
   # deploy-infrastructure-with-terraform:
   #   needs: pull-and-deploy-test-of-image
