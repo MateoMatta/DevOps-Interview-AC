@@ -86,18 +86,17 @@ jobs:
           sudo sed 's/REPLACE/\n/g' temporalFile.pem > /home/runner/candidate.pem
           sudo chmod 400 /home/runner/candidate.pem
           aws --version
-          aws configure set aws_access_key_id 123
-          aws configure set aws_secret_access_key 456
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set default.region us-east-1
           export AWS_PAGER=""
           sudo echo 'output = json' >> ~/.aws/config
           cat ~/.aws/config
-          cat ~/.aws/credentials
-
-          # echo 'Authenticating...'
-          # aws sts get-caller-identity
+          echo 'Authenticating...'
+          aws sts get-caller-identity
           echo 'Deploying containers...'
           chmod 777 /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh
+          aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names demo-asg-instance-1 --region ${{ vars.AWS_REGION }} --query AutoScalingGroups[].Instances[].InstanceId --output text
           # ls -la $PWD
           echo 'Aqui'
 
