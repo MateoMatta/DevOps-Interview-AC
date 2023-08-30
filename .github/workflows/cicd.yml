@@ -87,8 +87,6 @@ jobs:
           sudo chmod 400 candidate.pem
           chmod 777 /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh
           su -
-          cd /root;apt update -y; apt install unzip curl -y;curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip";unzip awscliv2.zip;./aws/install --update;aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }};aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }};aws configure set default.region us-east-1;echo 'output = json' >> /root/.aws/config;export AWS_PAGER="";aws sts get-caller-identity;aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names demo-asg-instance-1 --region us-east-1 --query AutoScalingGroups[].Instances[].InstanceId;exit
-          sudo sh /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh demo-asg-instance-1 ${{ vars.AWS_REGION }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           echo 'Infrastructure Completely deployed'
 
         env:
