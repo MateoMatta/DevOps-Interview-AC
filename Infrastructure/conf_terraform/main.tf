@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "terraform_resources"
+    bucket = "terraform-resources-test"
     key = "tfstates"
     region = "us-east-1"
   }
@@ -170,7 +170,7 @@ resource "aws_elb" "demo-elb" {
   }
 
   resource "aws_s3_bucket" "s3Bucket" {
-    bucket = "terraform_resources"
+    bucket = "terraform-resources-test"
     acl    = "public-read"
 
     policy = <<EOF
@@ -183,7 +183,7 @@ resource "aws_elb" "demo-elb" {
              "s3:GetObject"
           ],
          "effect" : "Allow",
-         "resource" : "arn:aws:s3:::terraform_resources/*",
+         "resource" : "arn:aws:s3:::terraform-resources-test/*",
          "principal" : "*"
       }
     ]
