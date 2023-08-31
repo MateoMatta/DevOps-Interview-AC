@@ -180,29 +180,35 @@ resource "aws_elb" "demo-elb" {
 }
 resource "aws_s3_bucket" "s3Bucket" {
   bucket = "terraform-resources-test"
-
+  lifecycle {
+    create_before_destroy = true
+  }
   # acl = "public-read"
 
   }
 
 resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
   bucket = aws_s3_bucket.s3Bucket.id
-  policy = <<EOF
-  {
-      "id" : "MakePublic",
-    "version" : "2012-10-17",
-    "statement" : [
-        {
-          "action" : [
-              "s3:GetObject"
-            ],
-          "effect" : "Allow",
-          "resource" : "arn:aws:s3:::terraform-resources-test/*",
-          "principal" : "*"
-        }
-      ]
+  policy = data.aws_iam_policy_document.allow_access_from_another_account.json
+}
+
+data "aws_iam_policy_document" "allow_access_from_another_account" {
+    statement {
+    principals {
+      type        = "AWS"
+      identifiers = ["729158664723"]
     }
-  EOF
+
+    actions = [
+      "s3:GetObject",
+      "s3:ListBucket",
+    ]
+
+    resources = [
+      aws_s3_bucket.s3Bucket.arn,
+      "${aws_s3_bucket.s3Bucket.arn}/*",
+    ]
+  }
 }
 
 resource "aws_s3_bucket_versioning" "versioning_for_s3Bucket" {
@@ -212,22 +218,6 @@ resource "aws_s3_bucket_versioning" "versioning_for_s3Bucket" {
   }
 }
 
-resource "aws_s3_bucket_acl" "acl_for_s3Bucket" {
-  bucket = aws_s3_bucket.s3Bucket.id
-  acl    = "private"
-}
-
-resource "aws_s3_bucket_lifecycle_configuration" "lifecycle_for_s3Bucket" {
-  bucket = aws_s3_bucket.s3Bucket.id
-
-  rule {
-    id = "rule-1"
-
-    # ... other transition/expiration actions ...
-
-    status = "Enabled"
-  }
-}
 
 # resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
 #   bucket = aws_s3_bucket.s3Bucket.id
