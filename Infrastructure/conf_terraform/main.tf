@@ -238,7 +238,7 @@ ingress {
 
 
 resource "aws_db_instance" "default" {
-  identifier             = "postgres_db_demo-mateo"
+  identifier             = "postgres-db-demo-mateo"
   db_name                = "postgres_db_demo"
   instance_class         = "db.t2.micro"
   allocated_storage      = 5
