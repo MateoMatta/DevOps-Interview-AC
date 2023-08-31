@@ -123,7 +123,7 @@ jobs:
     - name: Terraform Apply
       id: apply
       run: terraform -chdir=$WORKING_DIRECTORY apply -auto-approve; sudo ls -la /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform
-      continue-on-error: true
+      continue-on-error: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
