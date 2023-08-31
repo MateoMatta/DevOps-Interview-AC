@@ -218,11 +218,10 @@ resource "aws_s3_bucket_versioning" "versioning_for_s3Bucket" {
   }
 }
 
-resource "random_string" "postgres_db_demo-db-password" {
-  length  = 32
-  upper   = true
-  number  = true
-  special = false
+resource "random_password" "password" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
 resource "aws_security_group" "postgres_db_demo" {
@@ -249,7 +248,7 @@ resource "aws_db_instance" "default" {
   publicly_accessible    = true
   vpc_security_group_ids = [aws_security_group.postgres_db_demo.id]
   username               = "mateo"
-  password               = "random_string.postgres_db_demo-db-password.result}"
+  password               = random_password.password.result
 }
 
 # resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
