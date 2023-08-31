@@ -18,15 +18,11 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v3
 
-    - uses: hashicorp/setup-terraform@v2
-
-    # - name: Terraform Init
-    #   id: init
-    #   run: terraform -chdir=./Infrastructure/conf_terraform init -input=false; sudo ls -la /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform;pwd
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #     AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    - name: terraform destroy
+      uses: dflook/terraform-destroy-workspace@v1
+      with:
+        path: terraform
+        workspace: ${{ github.head_ref }}
 
 
     - name: Terraform Destroy
