@@ -74,7 +74,7 @@ jobs:
   #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
-  terraform-plan:
+  deploy-infrastructure-with-terraform:
     name: Terrafrom plan of infrastructure
     # needs: pull-and-run-test-for-image
     runs-on: ubuntu-latest
@@ -119,6 +119,13 @@ jobs:
         AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         continue-on-error: false
+
+    - name: Terraform Apply
+      id: apply
+      run: terraform -chdir=$WORKING_DIRECTORY apply; sudo ls -la /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform
+      continue-on-error: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
     - name: tree
       run: sudo apt update -y; sudo apt install tree -y; sudo tree /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/
@@ -139,26 +146,6 @@ jobs:
         # sed -i 's\"\\g' dos.json
 
 # ------ TERRAFORM APPLY
-  deploy-infrastructure-with-terraform:
-    needs: terraform-plan
-    runs-on: ubuntu-20.04
-    name: Deploy Webserver
-    env:
-      WORKING_DIRECTORY: '/home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform'
-
-    steps:
-
-    - name: Checkout Repo
-      uses: actions/checkout@v3
-
-    - uses: hashicorp/setup-terraform@v2
-      
-    - name: Terraform Apply
-      id: apply
-      run: terraform -chdir=$WORKING_DIRECTORY apply; sudo ls -la /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform
-      continue-on-error: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy-webserver-container:
     needs: deploy-infrastructure-with-terraform
