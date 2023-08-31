@@ -183,6 +183,10 @@ resource "aws_s3_bucket" "s3Bucket" {
 
   acl = "public-read"
 
+  lifecycle {
+    prevent_destroy = true
+  }
+
   policy = <<EOF
 {
      "id" : "MakePublic",
