@@ -12,26 +12,21 @@ jobs:
     name: Terrafrom destroy of infrastructure
     runs-on: ubuntu-latest
     env:
-      working-directory: '/home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform'
+      WORKING_DIRECTORY: '/home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform'
+
     steps:
 
     - name: Checkout Repo
       uses: actions/checkout@v3
 
-    - name: terraform destroy
-      uses: dflook/terraform-destroy-workspace@v1
-      with:
-        path: terraform
-        workspace: ${{ github.head_ref }}
-
-
+    - uses: hashicorp/setup-terraform@v2
+      
     - name: Terraform Destroy
-      id: plan
-      run: terraform -chdir=./Infrastructure/conf_terraform destroy -auto-approve; sudo ls /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform
+      id: fmt
+      run: terraform -chdir=$WORKING_DIRECTORY destroy; sudo ls -la /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform
+      continue-on-error: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     - name: Sync S3
       uses: jakejarvis/s3-sync-action@master

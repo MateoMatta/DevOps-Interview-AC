@@ -139,49 +139,60 @@ jobs:
         # sed -i 's\"\\g' dos.json
 
 # ------ TERRAFORM APPLY
-# deploy-infrastructure-with-terraform:
-#   needs: terraform-plan
-#   runs-on: ubuntu-20.04
-#   name: Deploy Webserver
-  #   steps:
-    
-    #   - name: Checkout Repo
-    #     uses: actions/checkout@v3
-    
-    
-    # deploy-webserver-container:
-    #   needs: deploy-infrastructure-with-terraform
-    #   runs-on: ubuntu-20.04  
-    #   steps:
-  
-    #     - name: Clone test-app repo
-    #       uses: actions/checkout@v3   
-  
-    #     - run: |
-    #         sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
-    #         sudo sed 's/REPLACE/\n/g' temporalFile.pem > /home/runner/candidate.pem
-    #         sudo chmod 400 /home/runner/candidate.pem
-    #         aws --version
-    #         aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #         aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #         aws configure set default.region us-east-1
-    #         export AWS_PAGER=""
-    #         sudo echo 'output = json' >> ~/.aws/config
-    #         # cat ~/.aws/config
-    #         echo 'Authenticating...'
-    #         aws sts get-caller-identity  > /dev/null 2>&1
-    #         echo 'Deploying containers...'
-    #         chmod 777 /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh
-    #         # aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names demo-asg-instance-1 --region ${{ vars.AWS_REGION }} --query AutoScalingGroups[].Instances[].InstanceId --output text
-    #         # ls -la $PWD
-    #         # echo 'Aqui'
-    #         /usr/bin/bash /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh demo-asg-instance-1 ${{ vars.AWS_REGION }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #         echo 'Infrastructure Completely deployed'
-  
-    #       env:
-    #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  deploy-infrastructure-with-terraform:
+    needs: terraform-plan
+    runs-on: ubuntu-20.04
+    name: Deploy Webserver
+    env:
+      WORKING_DIRECTORY: '/home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform'
+
+    steps:
+
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+
+    - uses: hashicorp/setup-terraform@v2
+      
+    - name: Terraform Apply
+      id: fmt
+      run: terraform -chdir=$WORKING_DIRECTORY apply; sudo ls -la /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform
+      continue-on-error: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy-webserver-container:
+    needs: deploy-infrastructure-with-terraform
+    runs-on: ubuntu-20.04  
+    steps:
+
+      - name: Clone test-app repo
+        uses: actions/checkout@v3   
+
+      - run: |
+          sudo echo ${{ secrets.PEM_CANDIDATE_KEY }} > temporalFile.pem
+          sudo sed 's/REPLACE/\n/g' temporalFile.pem > /home/runner/candidate.pem
+          sudo chmod 400 /home/runner/candidate.pem
+          aws --version
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region us-east-1
+          export AWS_PAGER=""
+          sudo echo 'output = json' >> ~/.aws/config
+          # cat ~/.aws/config
+          echo 'Authenticating...'
+          aws sts get-caller-identity  > /dev/null 2>&1
+          echo 'Deploying containers...'
+          chmod 777 /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh
+          # aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names demo-asg-instance-1 --region ${{ vars.AWS_REGION }} --query AutoScalingGroups[].Instances[].InstanceId --output text
+          # ls -la $PWD
+          # echo 'Aqui'
+          /usr/bin/bash /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh demo-asg-instance-1 ${{ vars.AWS_REGION }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          echo 'Infrastructure Completely deployed'
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   # ssh export asdasda ec2
   # ssh user1@server1 'command2'
   # ssh -i "candidate.pem" ubuntu@44.203.143.235 'export TEST=$(echo ${{ secrets.AWS_ACCOUNT_ID }})  | echo "Im Here"'
