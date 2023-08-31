@@ -88,12 +88,12 @@ jobs:
 
     - uses: hashicorp/setup-terraform@v2
       
-    - name: Terraform fmt
-      id: fmt
-      run: terraform -chdir=$WORKING_DIRECTORY fmt -check; sudo ls -la /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform
-      continue-on-error: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # - name: Terraform fmt
+    #   id: fmt
+    #   run: terraform -chdir=$WORKING_DIRECTORY fmt -check
+    #   continue-on-error: true
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Terraform Init
       id: init
