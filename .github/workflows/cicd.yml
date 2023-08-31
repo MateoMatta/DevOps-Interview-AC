@@ -154,7 +154,7 @@ jobs:
     - uses: hashicorp/setup-terraform@v2
       
     - name: Terraform Apply
-      id: fmt
+      id: apply
       run: terraform -chdir=$WORKING_DIRECTORY apply; sudo ls -la /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform
       continue-on-error: false
       env:

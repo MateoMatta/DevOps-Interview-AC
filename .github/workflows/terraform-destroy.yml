@@ -22,7 +22,7 @@ jobs:
     - uses: hashicorp/setup-terraform@v2
       
     - name: Terraform Destroy
-      id: fmt
+      id: Destroy
       run: terraform -chdir=$WORKING_DIRECTORY destroy; sudo ls -la /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform
       continue-on-error: false
       env:
