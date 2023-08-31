@@ -190,6 +190,7 @@ jobs:
           # aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names demo-asg-instance-1 --region ${{ vars.AWS_REGION }} --query AutoScalingGroups[].Instances[].InstanceId --output text
           # ls -la $PWD
           # echo 'Aqui'
+          echo 'Configuring web server...'
           /usr/bin/bash /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/scripts/getAsgMachinesIps.sh demo-asg-instance-1 ${{ vars.AWS_REGION }} ${{ secrets.AWS_ACCESS_KEY_ID }} ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           echo 'Infrastructure Completely deployed'
 
