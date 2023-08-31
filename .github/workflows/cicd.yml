@@ -78,6 +78,8 @@ jobs:
     name: Deploy Site
     # needs: pull-and-run-test-for-image
     runs-on: ubuntu-latest
+    env:
+      working-directory: '/home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform'
     steps:
 
     - name: Checkout Repo
@@ -87,7 +89,7 @@ jobs:
 
     - name: Terraform fmt
       id: fmt
-      run: sudo cd /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform; terraform fmt -check; sudo ls /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform
+      run: terraform fmt -check; sudo ls /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform
       continue-on-error: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
