@@ -113,7 +113,7 @@ jobs:
 
     - name: Terraform State
       id: Avoid_destroying_S3_tfstates_bucket
-      run: terraform -chdir=$WORKING_DIRECTORY state rm aws_s3_bucket.s3Bucket
+      run: terraform -chdir=$WORKING_DIRECTORY state list; terraform -chdir=$WORKING_DIRECTORY state rm aws_s3_bucket.s3Bucket
       continue-on-error: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
