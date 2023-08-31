@@ -14,6 +14,10 @@ All of this was deployed on
 The solution has been configured with a new VPC, Subnet, Internet gateway, Route table, Security Group, LB, Autoscaling Group of 2 EC2 instances, S3 and its proper personalized Launch configuration with a bash script that configures the web server.
 
 
+### Prerequisites
+- Secrets configured in GitHub Actions: AWS_ACCESS_KEY_ID, AWS_ACCOUNT_ID, AWS_ACCOUNT_ID, PEM_CANDIDATE_KEY (.pem key to access through SSH to EC2 instances internally )
+- Variables configured in GitHub Actions: AWS_REGION
+
 ### Implementation
 1. Go to the GitHub project on your browser.
 
@@ -57,8 +61,3 @@ All the code rights to the developers mentioned below.
         title     = {DevOps interview demo}
     }
 
-
-```chmod 700 ./candidate.pem```
-
-- Log in with SSH inside the machine.
-```ssh -i "candidate.pem" ubuntu@xxx.xxx.xxx.xxx```
