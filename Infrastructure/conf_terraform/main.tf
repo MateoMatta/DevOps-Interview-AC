@@ -171,28 +171,28 @@ resource "aws_elb" "demo-elb" {
 
   data "aws_s3_bucket" "s3Bucket" {
     bucket = "terraform-resources-test"
-    acl    = "public-read"
+    # acl    = "public-read"
 
-    policy = <<EOF
-{
-     "id" : "MakePublic",
-   "version" : "2012-10-17",
-   "statement" : [
-      {
-         "action" : [
-             "s3:GetObject"
-          ],
-         "effect" : "Allow",
-         "resource" : "arn:aws:s3:::terraform-resources-test/*",
-         "principal" : "*"
-      }
-    ]
-  }
-EOF
+#     policy = <<EOF
+# {
+#      "id" : "MakePublic",
+#    "version" : "2012-10-17",
+#    "statement" : [
+#       {
+#          "action" : [
+#              "s3:GetObject"
+#           ],
+#          "effect" : "Allow",
+#          "resource" : "arn:aws:s3:::terraform-resources-test/*",
+#          "principal" : "*"
+#       }
+#     ]
+#   }
+# EOF
 
-    website {
-      index_document = "index.html"
-    }
+    # website {
+    #   index_document = "index.html"
+    # }
   }
 
   #     #   #   listener {
