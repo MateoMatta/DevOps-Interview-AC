@@ -1,4 +1,4 @@
-name: CICD
+name: TERRAFORM-DESTROY
 on: [workflow_dispatch]
 env:
   # verbosity setting for Terraform logs
@@ -8,9 +8,8 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 jobs:
 
-  terraform-plan:
-    name: Terrafrom plan of infrastructure
-    # needs: pull-and-run-test-for-image
+  terraform-destroy:
+    name: Terrafrom destroy of infrastructure
     runs-on: ubuntu-latest
     env:
       working-directory: '/home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform'

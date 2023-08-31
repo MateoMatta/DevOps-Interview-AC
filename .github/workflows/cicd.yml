@@ -1,4 +1,4 @@
-name: TERRAFORM-DESTROY
+name: CICD
 on: [workflow_dispatch]
 env:
   # verbosity setting for Terraform logs
