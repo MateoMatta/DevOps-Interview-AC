@@ -78,9 +78,8 @@ jobs:
     name: Terrafrom plan of infrastructure
     # needs: pull-and-run-test-for-image
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: '${{ env.tf_actions_working_dir }}'
+    env:
+      WORKING_DIRECTORY: '/home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform'
 
     steps:
 
