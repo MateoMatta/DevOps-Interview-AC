@@ -6,17 +6,20 @@ All of this was deployed on
 - AWS as Cloud Platform
 - GitHub Actions as CI/CD
 - S3 as TFSTATE files repository (with versionining)
-- Ansible as Configuration Management tool to construct the base Docker image for the webserver from scratch
+- Ansible as Configuration Management tool to construct the base Docker image for the webserver from scratch. Particularly this works in a "masterless" way. Every EC2 machine runs by itself some .yaml playbooks.
 - Some Linux/bash scripts to handle some configurations, API calls to AWS and tests to check .NetCore and Java provisioning
 - Modified configurations for Apache, to show as a particular web page and not a default page
-- 
+
 
 The solution has been configured with a new VPC, Subnet, Internet gateway, Route table, Security Group, LB, Autoscaling Group of 2 EC2 instances, S3 and its proper personalized Launch configuration with a bash script that configures the web server.
 
+CICD worfklow allows too to check if the container is built correctly; by pulling, running, go to a localhost:80 internally seeing the response of the web and (later) deleting the base image.
+  - This step can be excluded of the workflow
+
 
 ### Prerequisites
-- Secrets configured in GitHub Actions: AWS_ACCESS_KEY_ID, AWS_ACCOUNT_ID, AWS_ACCOUNT_ID, PEM_CANDIDATE_KEY (.pem key to access through SSH to EC2 instances internally )
-- Variables configured in GitHub Actions: AWS_REGION
+- *Secrets configured in GitHub Actions: AWS_ACCESS_KEY_ID, AWS_ACCOUNT_ID, AWS_ACCOUNT_ID, PEM_CANDIDATE_KEY (.pem key to access through SSH to EC2 instances internally )*
+- *Variables configured in GitHub Actions: AWS_REGION*
 
 ### Implementation
 1. Go to the GitHub project on your browser.
@@ -36,8 +39,17 @@ The solution has been configured with a new VPC, Subnet, Internet gateway, Route
 7. Select the first step of the workflow. You can view in real time how the pipelne is being executed.
 8. Wait until all of the steps get done and show a green dot on the left.
 
+### Notes
+
   * When the whole pipeline ends, wait from 30 to 90 seconds for the health check recognizes the the EC2 pool is OK and work properly.
   * Once the process is completed, Workflow console will show the output of the LoadBalancer's DNS. Look at the end of the "Terraform apply" step, inside "Terraform plan of infrastructure" for the value "lb_url".
+  * Don't worry if there is an error in "Terraform State" step, it will be ignored as expected. It happens when the infrastructure doesn't exist initially when the workflow is executed. The error says:
+
+  ```Error: Invalid target address```
+```│ ```
+```│ No matching objects found. To view the available instances, use "terraform```
+```│ state list". Please modify the address to reference a specific instance.```
+  
 
 ### Wipe
 Finally, once you're done seeing the result, delete the whole infrastructure built.
