@@ -87,7 +87,7 @@ jobs:
 
     - name: Terraform fmt
       id: fmt
-      run: terraform fmt -check
+      run: terraform fmt -check; sudo ls /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform
       continue-on-error: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -95,7 +95,7 @@ jobs:
 
     - name: Terraform Init
       id: init
-      run: terraform init
+      run: terraform init; sudo ls /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TF_ACTION_WORKING_DIR: '/home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform'
@@ -113,7 +113,7 @@ jobs:
 
     - name: Terraform Plan
       id: plan
-      run: terraform plan -no-color
+      run: terraform plan -no-color; sudo ls /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TF_ACTION_WORKING_DIR: '/home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform'
