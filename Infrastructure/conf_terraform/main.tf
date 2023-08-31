@@ -8,7 +8,7 @@ terraform {
 
   backend "s3" {
     bucket = "terraform-resources-test"
-    key = "tfstates"
+    key    = "tfstates"
     region = "us-east-1"
   }
 
@@ -169,7 +169,7 @@ resource "aws_elb" "demo-elb" {
     lb_protocol       = "http"
   }
 
-  resource "aws_s3_bucket" "s3Bucket" {
+  data "aws_s3_bucket" "s3Bucket" {
     bucket = "terraform-resources-test"
     acl    = "public-read"
 
