@@ -218,6 +218,10 @@ resource "aws_s3_bucket_versioning" "versioning_for_s3Bucket" {
   }
 }
 
+module "rds_example_complete-postgres" {
+  source  = "terraform-aws-modules/rds/aws//examples/complete-postgres"
+  version = "6.1.1"
+}
 
 # resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
 #   bucket = aws_s3_bucket.s3Bucket.id
