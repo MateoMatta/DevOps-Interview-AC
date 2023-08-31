@@ -238,8 +238,8 @@ ingress {
 }
 
 
-resource "aws_db_instance" "postgres_db_demo" {
-  identifier             = "postgres_db_demo"
+resource "aws_db_instance" "postgres_db_demo-mateo" {
+  identifier             = "postgres_db_demo-mateo"
   name                   = "postgres_db_demo"
   instance_class         = "db.t2.micro"
   allocated_storage      = 5
@@ -248,7 +248,7 @@ resource "aws_db_instance" "postgres_db_demo" {
   skip_final_snapshot    = true
   publicly_accessible    = true
   vpc_security_group_ids = [aws_security_group.postgres_db_demo.id]
-  username               = "sameed"
+  username               = "mateo"
   password               = "random_string.postgres_db_demo-db-password.result}"
 }
 
