@@ -169,9 +169,22 @@ resource "aws_elb" "demo-elb" {
     lb_protocol       = "http"
   }
 
-  data "aws_s3_bucket" "s3Bucket" {
-    bucket = "terraform-resources-test"
-    # acl    = "public-read"
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 3
+    target              = "HTTP:80/"
+    interval            = 30
+  }
+
+}
+data "aws_s3_bucket" "s3Bucket" {
+  bucket = "terraform-resources-test"
+}
+
+
+
+# acl    = "public-read"
 
 #     policy = <<EOF
 # {
@@ -190,24 +203,17 @@ resource "aws_elb" "demo-elb" {
 #   }
 # EOF
 
-    # website {
-    #   index_document = "index.html"
-    # }
-  }
+# website {
+#   index_document = "index.html"
+# }
+# }
 
-  #     #   #   listener {
-  #     #   #   instance_port      = 80
-  #     #   #   instance_protocol  = "http"
-  #     #   #   lb_port            = 443
-  #     #   #   lb_protocol        = "https"
-  #     #   #   ssl_certificate_id = "arn:aws:iam::016311465375:test-certificate/mateomatta"
-  #     #   # }
+#     #   #   listener {
+#     #   #   instance_port      = 80
+#     #   #   instance_protocol  = "http"
+#     #   #   lb_port            = 443
+#     #   #   lb_protocol        = "https"
+#     #   #   ssl_certificate_id = "arn:aws:iam::016311465375:test-certificate/mateomatta"
+#     #   # }
 
-  health_check {
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    timeout             = 3
-    target              = "HTTP:80/"
-    interval            = 30
-  }
-}
+
