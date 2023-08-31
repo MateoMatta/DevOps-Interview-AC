@@ -7,17 +7,17 @@ mkdir -p /srv/app
 sudo chmod 755 /srv/app
 git clone https://github.com/MateoMatta/DevOps-Interview-AC /srv/app
 
-cd
-mkdir test
-chmod 644 test
-cd test
+# cd
+# mkdir test
+# chmod 644 test
+# cd test
 
 sudo apt update -y
 sudo apt install git jq -y
-sudo mkdir /home/runner/app_content
-sudo chmod 755 /home/runner/app_content
-sudo cp ./Dockerfile /home/runner/app_content/Dockerfile
-sudo ls /home/runner/app_content/
+sudo mkdir $HOME/app_content
+sudo chmod 755 $HOME/app_content
+sudo cp /srv/app/Dockerfile $HOME/app_content/Dockerfile
+# sudo ls $HOME/app_content/
 #Install ansible
 sudo apt install ansible -y
 #Run Ansible playbook
