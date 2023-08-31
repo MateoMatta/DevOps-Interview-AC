@@ -238,7 +238,7 @@ ingress {
 }
 
 
-resource "aws_db_instance" "postgres_db_demo-mateo" {
+resource "aws_db_instance" "default" {
   identifier             = "postgres_db_demo-mateo"
   name                   = "postgres_db_demo"
   instance_class         = "db.t2.micro"
