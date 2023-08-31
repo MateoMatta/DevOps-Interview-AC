@@ -123,7 +123,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     
     - name: tree
-      run: sudo apt update -y; sudo install tree -y; sudo tree /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC
+      run: sudo apt update -y; sudo apt install tree -y; sudo tree /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC
     - name: Sync S3
       uses: jakejarvis/s3-sync-action@master
       env:
