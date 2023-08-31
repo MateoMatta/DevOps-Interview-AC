@@ -93,7 +93,7 @@ jobs:
       
     - name: Terraform fmt
       id: fmt
-      run: terraform fmt -check; sudo ls /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform
+      run: terraform fmt -check; sudo ls -la /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform
       continue-on-error: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -116,14 +116,15 @@ jobs:
 
     - name: Terraform Plan
       id: plan
-      run: terraform plan -no-color; sudo ls /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform
+      run: terraform plan -no-color; sudo ls -la /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        continue-on-error: false
     
     - name: tree
-      run: sudo apt update -y; sudo apt install tree -y; sudo tree /home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC
+      run: sudo apt update -y; sudo apt install tree -y; sudo tree /home/runner/
     - name: Sync S3
       uses: jakejarvis/s3-sync-action@master
       env:
