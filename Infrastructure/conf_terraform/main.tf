@@ -178,8 +178,27 @@ resource "aws_elb" "demo-elb" {
   }
 
 }
-data "aws_s3_bucket" "s3Bucket" {
+resource "aws_s3_bucket" "s3Bucket" {
   bucket = "terraform-resources-test"
+
+  acl = "public-read"
+
+  policy = <<EOF
+{
+     "id" : "MakePublic",
+   "version" : "2012-10-17",
+   "statement" : [
+      {
+         "action" : [
+             "s3:GetObject"
+          ],
+         "effect" : "Allow",
+         "resource" : "arn:aws:s3:::[BUCKET_NAME_HERE]/*",
+         "principal" : "*"
+      }
+    ]
+  }
+EOF
 }
 
 
