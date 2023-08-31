@@ -205,6 +205,12 @@ resource "aws_s3_bucket" "s3Bucket" {
 EOF
 }
 
+resource "aws_s3_bucket_versioning" "versioning_for_s3Bucket" {
+  bucket = aws_s3_bucket.s3Bucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
 
 
 # acl    = "public-read"
