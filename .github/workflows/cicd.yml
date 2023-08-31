@@ -104,7 +104,7 @@ jobs:
 
     - name: Terraform Validate
       id: validate
-      run: terraform -chdir=/home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform validate -no-color
+      run: terraform validate -no-color
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TF_ACTION_WORKING_DIR: '/home/runner/work/DevOps-Interview-AC/DevOps-Interview-AC/Infrastructure/conf_terraform'
