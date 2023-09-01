@@ -13,17 +13,29 @@ All of this was deployed on
 - To establish connection from the Docker containers (inside EC2 instances), it's possible to have a Security Group resource *[aws_security_group]*. This, in order to allow private connection from the subnet inside the VPC that contains EC2 machines with Docker containers running, to access the RDS MySQL database created. The next example shows net configurations to perform this.
 
    ```ingress {```
+
      ```from_port       = 3306```
+
     ```to_port         = 3306```
+
      ```protocol        = "tcp"```
+
      ```cidr_blocks = ["172.xxx.xxx.xxx/32"]```
+
    ```}```
+
    ```egress {```
+
      ```from_port   = 0```
+
      ```to_port     = 0```
+
      ```protocol    = "-1"```
+
      ```cidr_blocks = ["0.0.0.0/0"]```
+
    ```}```
+   
  ```}```
 
 - The solution has been configured with a new VPC, Subnet, Internet gateway, Route table, Security Group, LoadBalancer, MySQL RDS database, Autoscaling Group of 2 EC2 instances, ECR for Docker images registry service, S3 storage solution and a personalized Launch Configuration with a bash script that configures the web server.
@@ -104,7 +116,7 @@ Finally, once you're done seeing the result, delete the whole infrastructure bui
 
 1. Login on any EC2 machine of the Autoscaling Group pool by typing:
 
-```ssh -i "candidate.pem"```
+```ssh -i "candidate.pem" ubuntu@<PUBLIC_IP>```
 
 - Then, type "yes" with your keyboard, and press Enter button.
 
@@ -120,7 +132,7 @@ Finally, once you're done seeing the result, delete the whole infrastructure bui
 
 1. Login on any EC2 machine of the Autoscaling Group pool by typing:
 
-```ssh -i "candidate.pem"```
+```ssh -i "candidate.pem" ubuntu@<PUBLIC_IP>```
 
 - Then, type "yes" with your keyboard, and press Enter button.
 
