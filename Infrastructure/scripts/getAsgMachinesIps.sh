@@ -17,7 +17,7 @@ do
     export MACHINE_COMMAND='touch secAccessKey.txt; echo '$4' > secAccessKey.txt; ls; pwd'
     sudo ssh -oStrictHostKeyChecking=no -i "/home/runner/candidate.pem" ubuntu@$IP $MACHINE_COMMAND 
 
-    export MACHINE_COMMAND='sudo su;sh runDockerContainers.sh'
+    export MACHINE_COMMAND='sh /srv/app/Infrastructure/scripts/runDockerContainers.sh'
     sudo ssh -oStrictHostKeyChecking=no -i "/home/runner/candidate.pem" ubuntu@$IP $MACHINE_COMMAND 
 
     # export MACHINE_COMMAND='rm accessKey.txt; rm secAccessKey.txt'
