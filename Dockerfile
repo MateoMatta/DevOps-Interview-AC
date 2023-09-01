@@ -1,14 +1,14 @@
 # Dockerfile for app stack installation
 # To build locally the image, use: sudo docker build --no-cache -t test-app .
-# To run locally the image, use: docker run -d -p 8080:80 --name test-app test-app
+# To run locally the image, use: docker run -d -p 80:80 --name test-app test-app
 # Or
 # sudo docker run -dit --name my-apache-app -p 80:80 httpd
 # Ubuntu 20.04 image
-FROM httpd
+FROM httpd:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update -y
-RUN apt upgrade -y
+# RUN apt upgrade -y
 
 # Install Git
 RUN apt install -y git 
@@ -35,21 +35,21 @@ RUN rm -f /usr/local/apache2/htdocs/index.html
 RUN cp /srv/app/Frontend/index.apache-debian.html /usr/local/apache2/htdocs
 RUN cp /srv/app/Frontend/000-default.conf /usr/local/apache2/conf/
 
+RUN rm -rf /srv/app
+
 
 # (lightest image) 
-# RUN apt purge ansible --auto-remove --yes
+RUN apt purge ansible --auto-remove --yes
 # Safe image (better) 
-RUN apt purge ansible --yes
+# RUN apt purge ansible --yes autoremove
 
 # Restart apache
 RUN apachectl -k restart
 
 # Provide executable permissions to the code
 RUN chmod -R 0777 /usr/local/apache2/htdocs/*
-RUN chmod -R 0777 /usr/*
 
 # Change WORKDIR
 WORKDIR /usr/local/apache2/htdocs/
 
 CMD ["apachectl","-D","FOREGROUND"]
-
