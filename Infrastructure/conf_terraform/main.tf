@@ -101,14 +101,6 @@ resource "aws_security_group" "demo-sg-01" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  #   ingress {
-  #   description      = "Allow private connection from subnet inside the VPC that contains EC2 machines that have Docker containers running, to access the RDS PostgreSQL database created"
-  #   from_port        = 5432
-  #   to_port          = 5432
-  #   protocol         = "tcp"
-  #   cidr_blocks      = ["172.xxx.xxx.xxx/32"]
-  # }
-
   egress {
     from_port        = 0
     to_port          = 0
@@ -219,48 +211,51 @@ resource "aws_s3_bucket_versioning" "versioning_for_s3Bucket" {
     status = "Enabled"
   }
 }
-# module "rds_example_complete-postgres" {
-#   source  = "terraform-aws-modules/rds/aws//examples/complete-postgres"
+
+resource "random_password" "password" {
+  length           = 16
+  special          = true
+  override_special = "test-password123"
+}
+
+# module "rds_example_complete-mysql" {
+#   source  = "terraform-aws-modules/rds/aws//examples/complete-mysql"
 #   version = "6.1.1"
 # }
 
-# create a security group for RDS Database Instance
 
+#create a security group for RDS Database Instance
+# resource "aws_security_group" "rds_sg" {
+#   name = "rds_sg"
 
+#   Allow private connection from subnet inside the VPC that contains EC2 machines that have Docker containers running, to access the RDS MySQL database created.
 
-
-
-# resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
-#   bucket = aws_s3_bucket.s3Bucket.id
-#   policy = data.aws_iam_policy_document.allow_access_from_another_account.json
-# }
-
-# data "aws_iam_policy_document" "allow_access_from_another_account" {
-#   statement {
-#     principals {
-#       type        = "AWS"
-#       identifiers = ["729158664723"]
-#     }
-
-#     actions = [
-#       "s3:GetObject",
-#       "s3:ListBucket",
-#     ]
-
-#     resources = [
-#       aws_s3_bucket.s3Bucket.arn,
-#       "${aws_s3_bucket.s3Bucket.arn}/*",
-#     ]
+#   ingress {
+#     from_port       = 3306
+#     to_port         = 3306
+#     protocol        = "tcp"
+#     cidr_blocks = ["172.xxx.xxx.xxx/32"]
+#   }
+#   egress {
+#     from_port   = 0
+#     to_port     = 0
+#     protocol    = "-1"
+#     cidr_blocks = ["0.0.0.0/0"]
 #   }
 # }
 
-
-#     #   #   listener {
-#     #   #   instance_port      = 80
-#     #   #   instance_protocol  = "http"
-#     #   #   lb_port            = 443
-#     #   #   lb_protocol        = "https"
-#     #   #   ssl_certificate_id = "arn:aws:iam::016311465375:test-certificate/mateomatta"
-#     #   # }
-
+# #create a RDS Database Instance
+# resource "aws_db_instance" "myinstance" {
+#   engine               = "mysql"
+#   identifier           = "myrdsinstance"
+#   allocated_storage    =  20
+#   engine_version       = "5.7"
+#   instance_class       = "db.t2.micro"
+#   username             = "myrdsuser"
+#   password             = random_password.password.result
+#   parameter_group_name = "default.mysql5.7"
+#   vpc_security_group_ids = ["${aws_security_group.rds_sg.id}"]
+#   skip_final_snapshot  = true
+#   publicly_accessible =  true
+# }
 
