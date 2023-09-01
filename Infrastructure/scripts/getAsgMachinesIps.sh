@@ -15,7 +15,7 @@ do
     sudo ssh -oStrictHostKeyChecking=no -i "/home/runner/candidate.pem" ubuntu@$IP 'touch $HOME/secAccessKey.txt; echo '$4' > $HOME/secAccessKey.txt' > /dev/null 2>&1
     sudo ssh -oStrictHostKeyChecking=no -i "/home/runner/candidate.pem" ubuntu@$IP 'AWS_ACCESS_KEY_ID=$(cat accessKey.txt) AWS_SECRET_ACCESS_KEY=$(cat secAccessKey.txt) aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 729158664723.dkr.ecr.us-east-1.amazonaws.com' > /dev/null 2>&1
     sudo ssh -oStrictHostKeyChecking=no -i "/home/runner/candidate.pem" ubuntu@$IP 'sudo docker run --name main-applications-registry -p 80:80 -d 729158664723.dkr.ecr.us-east-1.amazonaws.com/main-applications-registry' > /dev/null 2>&1
-    sudo ssh -oStrictHostKeyChecking=no -i "/home/runner/candidate.pem" ubuntu@$IP 'rm $HOME/accessKey.txt; rm $HOME/secAccessKey.txt; Initializing cntainers...'
+    sudo ssh -oStrictHostKeyChecking=no -i "/home/runner/candidate.pem" ubuntu@$IP 'rm $HOME/accessKey.txt; rm $HOME/secAccessKey.txt; echo "Initializing containers..."'
 
     ips="$ips,$IP"
 done
