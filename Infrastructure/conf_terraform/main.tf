@@ -102,11 +102,11 @@ resource "aws_security_group" "demo-sg-01" {
   }
 
   #   ingress {
-  #   description      = "Personal connecction from VPC to have a pre-work for the website"
-  #   from_port        = 0
-  #   to_port          = 0
-  #   protocol         = "-1"
-  #   cidr_blocks      = ["181.xxx.xxx.xxx/32"]
+  #   description      = "Allow private connection from subnet inside the VPC that contains EC2 machines that have Docker containers running, to access the RDS PostgreSQL database created"
+  #   from_port        = 5432
+  #   to_port          = 5432
+  #   protocol         = "tcp"
+  #   cidr_blocks      = ["172.xxx.xxx.xxx/32"]
   # }
 
   egress {
@@ -124,20 +124,6 @@ resource "aws_security_group" "demo-sg-01" {
     Author = "Mateo Matta"
   }
 }
-
-# resource "aws_instance" "my_vm" {
-#   ami             = "ami-0261755bbcb8c4a84" //Ubuntu AMI
-#   instance_type   = "t2.micro"
-#   key_name        = "candidate"
-
-#   tags = {
-#     Name = "My EC2 instance"
-#     Author = "Mateo Matta"
-#   }
-# }
-# name = "demo-elb"
-# subnets = [aws_subnet.demo-sub-01.id]
-# security_groups = [aws_security_group.demo-sg-01.id]
 
 resource "aws_autoscaling_group" "demo_autoscaling" {
   name                 = "demo-asg-instance-1"
@@ -169,7 +155,7 @@ resource "aws_launch_configuration" "demo_configuration" {
   associate_public_ip_address = true
   key_name                    = "candidate"
   user_data                   = file("../scripts/ansibleLaunchConfiguration.sh")
-  #export keys
+
 }
 
 resource "aws_elb" "demo-elb" {

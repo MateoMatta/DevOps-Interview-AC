@@ -29,14 +29,6 @@ jobs:
         AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-    - name: Terraform State list
-      id: state_list
-      run: terraform -chdir=$WORKING_DIRECTORY state list
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        continue-on-error: false
 
     - name: Terraform Validate
       id: validate
@@ -46,8 +38,43 @@ jobs:
         AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-    - name: Terraform RM State
-      id: Avoid_destroying_S3_tfstates_bucket
+    - name: Terraform State list
+      id: first_state_list
+      run: terraform -chdir=$WORKING_DIRECTORY state list
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        continue-on-error: false
+
+    - name: Terraform State RM
+      id: Avoid_destroying_S3_tfstates_bucket_one
+      run: terraform -chdir=$WORKING_DIRECTORY state rm aws_s3_bucket.s3Bucket
+      continue-on-error: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+    - name: Terraform Import
+      id: import
+      run: terraform -chdir=$WORKING_DIRECTORY import aws_s3_bucket.s3Bucket terraform-resources-test
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+
+    - name: Terraform State list
+      id: second_state_list
+      run: terraform -chdir=$WORKING_DIRECTORY state list
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        continue-on-error: false
+
+    - name: Terraform State RM
+      id: Avoid_destroying_S3_tfstates_bucket_two
       run: terraform -chdir=$WORKING_DIRECTORY state rm aws_s3_bucket.s3Bucket
       continue-on-error: true
       env:
