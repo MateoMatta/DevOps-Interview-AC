@@ -20,6 +20,7 @@ provider "aws" {
 }
 
 resource "aws_vpc" "demo-vpc" {
+
   cidr_block = "10.1.0.0/16"
   tags = {
     Name   = "Particular VPC"
@@ -28,8 +29,9 @@ resource "aws_vpc" "demo-vpc" {
 }
 
 resource "aws_subnet" "demo-sub-01" {
+
   vpc_id                  = aws_vpc.demo-vpc.id
-  cidr_block              = "10.1.1.0/24"
+  cidr_block              = "10.1.0.0/16"
   availability_zone       = "us-east-1a"
   map_public_ip_on_launch = true
   tags = {
@@ -39,6 +41,7 @@ resource "aws_subnet" "demo-sub-01" {
 }
 
 resource "aws_internet_gateway" "ig-demo" {
+
   vpc_id = aws_vpc.demo-vpc.id
 
   tags = {
@@ -49,6 +52,7 @@ resource "aws_internet_gateway" "ig-demo" {
 }
 
 resource "aws_route_table" "demo_route_table" {
+
   vpc_id = aws_vpc.demo-vpc.id
 
   route {
@@ -62,11 +66,13 @@ resource "aws_route_table" "demo_route_table" {
 }
 
 resource "aws_route_table_association" "public1" {
+
   subnet_id      = aws_subnet.demo-sub-01.id
   route_table_id = aws_route_table.demo_route_table.id
 }
 
 resource "aws_security_group" "demo-sg-01" {
+
   name        = "allow_ssh_and_web_server_ports"
   description = "Allow SSH and web ports for inbound traffic"
   vpc_id      = aws_vpc.demo-vpc.id
@@ -146,9 +152,16 @@ resource "aws_autoscaling_group" "demo_autoscaling" {
     value               = "demo-asg-instance-1"
     propagate_at_launch = true
   }
+    lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_launch_configuration" "demo_configuration" {
+  lifecycle {
+    create_before_destroy = true
+  }
+
   name                        = "placeholder-demo-lc"
   image_id                    = "ami-0261755bbcb8c4a84"
   instance_type               = "t2.micro"
@@ -160,7 +173,8 @@ resource "aws_launch_configuration" "demo_configuration" {
 }
 
 resource "aws_elb" "demo-elb" {
-  name            = "demo-elb-elb"
+
+  name            = "demo-elb-elbb"
   subnets         = [aws_subnet.demo-sub-01.id]
   security_groups = [aws_security_group.demo-sg-01.id]
   listener {
@@ -175,18 +189,19 @@ resource "aws_elb" "demo-elb" {
     unhealthy_threshold = 2
     timeout             = 3
     target              = "HTTP:80/"
-    interval            = 30
+    interval            = 29
   }
 
 }
+
+
 resource "aws_s3_bucket" "s3Bucket" {
   bucket = "terraform-resources-test"
-  lifecycle {
-    create_before_destroy = true
-  }
-  # acl = "public-read"
 
+  lifecycle {
+    prevent_destroy = true
   }
+}
 
 resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
   bucket = aws_s3_bucket.s3Bucket.id
@@ -218,45 +233,17 @@ resource "aws_s3_bucket_versioning" "versioning_for_s3Bucket" {
     status = "Enabled"
   }
 }
+# module "rds_example_complete-postgres" {
+#   source  = "terraform-aws-modules/rds/aws//examples/complete-postgres"
+#   version = "6.1.1"
+# }
 
-resource "random_password" "password" {
-  length           = 16
-  special          = true
-  override_special = "!#$%&*()-_=+[]{}<>:?"
-}
-
-resource "aws_security_group" "postgres_db_demo" {
-  vpc_id      = aws_vpc.demo-vpc.id
-  name        = "postgres_db_demo"
-  description = "Allow all inbound for Postgres"
-ingress {
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
+# create a security group for RDS Database Instance
 
 
-resource "aws_db_instance" "default" {
-  identifier             = "postgres-db-demo-mateo"
-  db_name                = "postgres_db_demo"
-  instance_class         = "db.t2.micro"
-  allocated_storage      = 5
-  engine                 = "postgres"
-  engine_version         = "12.5"
-  skip_final_snapshot    = true
-  publicly_accessible    = true
-  vpc_security_group_ids = [aws_security_group.postgres_db_demo.id]
-  username               = "mateo"
-  password               = random_password.password.result
-}
 
 
-module "rds_example_complete-postgres" {
-  source  = "terraform-aws-modules/rds/aws//examples/complete-postgres"
-  version = "6.1.1"
-}
+
 # resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
 #   bucket = aws_s3_bucket.s3Bucket.id
 #   policy = data.aws_iam_policy_document.allow_access_from_another_account.json
@@ -281,29 +268,6 @@ module "rds_example_complete-postgres" {
 #   }
 # }
 
-# acl    = "public-read"
-
-#     policy = <<EOF
-# {
-#      "id" : "MakePublic",
-#    "version" : "2012-10-17",
-#    "statement" : [
-#       {
-#          "action" : [
-#              "s3:GetObject"
-#           ],
-#          "effect" : "Allow",
-#          "resource" : "arn:aws:s3:::terraform-resources-test/*",
-#          "principal" : "*"
-#       }
-#     ]
-#   }
-# EOF
-
-# website {
-#   index_document = "index.html"
-# }
-# }
 
 #     #   #   listener {
 #     #   #   instance_port      = 80

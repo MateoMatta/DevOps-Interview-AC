@@ -19,3 +19,4 @@ do
 
     ips="$ips,$IP"
 done
+
