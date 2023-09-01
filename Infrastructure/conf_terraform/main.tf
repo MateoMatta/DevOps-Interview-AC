@@ -212,11 +212,11 @@ resource "aws_s3_bucket_versioning" "versioning_for_s3Bucket" {
   }
 }
 
-resource "random_password" "password" {
-  length           = 16
-  special          = true
-  override_special = "test-password123"
-}
+# resource "random_password" "password" {
+#   length           = 16
+#   special          = true
+#   override_special = "!#$%&*()-_=+[]{}<>:?"
+# }
 
 # module "rds_example_complete-mysql" {
 #   source  = "terraform-aws-modules/rds/aws//examples/complete-mysql"
@@ -249,10 +249,10 @@ resource "random_password" "password" {
 #   engine               = "mysql"
 #   identifier           = "myrdsinstance"
 #   allocated_storage    =  20
-#   engine_version       = "5.7"
-#   instance_class       = "db.t2.micro"
+#   engine_version       = "8.0.33"
+#   instance_class       = "db.t3.micro"
 #   username             = "myrdsuser"
-#   password             = random_password.password.result
+#   password             = "test-password123"
 #   parameter_group_name = "default.mysql5.7"
 #   vpc_security_group_ids = ["${aws_security_group.rds_sg.id}"]
 #   skip_final_snapshot  = true
